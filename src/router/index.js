@@ -1,6 +1,26 @@
 import {createRouter, createWebHashHistory} from "vue-router";
 import Home from "../views/Home.vue";
 
+const routes1 = [
+    {
+        path: '/',
+        redirect: '/dashboard'
+    }, {
+        path: "/",
+        name: "Home",
+        component: Home,
+        children: [
+            {
+                path: "/dashboard",
+                name: "dashboard",
+                meta: {
+                    title: '系统首页'
+                },
+                component: () => import ( /* webpackChunkName: "dashboard" */ "../views/Dashboard.vue")
+            },
+        ]
+    }
+];
 const routes = [
     {
         path: '/',
@@ -21,6 +41,7 @@ const routes = [
                 path: "/table",
                 name: "basetable",
                 meta: {
+                    permission: [],
                     title: '表格'
                 },
                 component: () => import ( /* webpackChunkName: "table" */ "../views/BaseTable.vue")

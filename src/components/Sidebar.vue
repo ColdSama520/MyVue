@@ -45,11 +45,10 @@ export default {
             },
             {
                 icon: "el-icon-lx-people",
-                index: "2",
+                index: "manager",
                 title: "管理员",
                 subs: [
                     {
-                        index: "2",
                         title: "教师管理",
                         subs: [
                             {
@@ -63,7 +62,6 @@ export default {
                         ]
                     },
                     {
-                        index: "1",
                         title: "课程查看",
                         subs: [
                             {
@@ -76,30 +74,60 @@ export default {
             },
             {
                 icon: "el-icon-lx-peoplefill",
-                index: "3",
+                index: "teacher",
                 title: "教师",
                 subs: [
                     {
-                        index: "2",
                         title: "班课管理",
                         subs: [
-                            {
-                                index: "5",
-                                title: "班课管理",
-                                subs: [
-
-                                ]
-                            }
+                          {
+                            title: "正常班课",
+                            index: "/table",
+                          },
+                          {
+                            title: "归档班课",
+                            index: "/table",
+                          },
+                          {
+                            title: "学生浏览",
+                            index: "/table",
+                          },
                         ]
                     },
                     {
-                        index: "3",
-                        title: "学生管理",
+                        title: "项目管理",
                         subs: [
-
+                          {
+                            title: "项目浏览",
+                            index: "/table",
+                          },
+                          {
+                            title: "小组浏览",
+                            index: "/table",
+                          },
+                          {
+                            title: "项目任务",
+                            index: "/table",
+                          }
                         ]
+                    },
+                    {
+                      title: "案例管理",
+                      subs: [
+                        {
+                          title: "案例浏览",
+                          index: "/table",
+                        }
+                      ]
                     }
                 ]
+            },
+            {
+              icon: "el-icon-lx-peoplefill",
+              index: "student",
+              title: "学生",
+              subs: [
+              ]
             },
             {
                 icon: "el-icon-lx-cascades",
