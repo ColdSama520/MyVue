@@ -1,26 +1,6 @@
 import {createRouter, createWebHashHistory} from "vue-router";
 import Home from "../views/Home.vue";
 
-const routes1 = [
-    {
-        path: '/',
-        redirect: '/dashboard'
-    }, {
-        path: "/",
-        name: "Home",
-        component: Home,
-        children: [
-            {
-                path: "/dashboard",
-                name: "dashboard",
-                meta: {
-                    title: '系统首页'
-                },
-                component: () => import ( /* webpackChunkName: "dashboard" */ "../views/Dashboard.vue")
-            },
-        ]
-    }
-];
 const routes = [
     {
         path: '/',
@@ -38,10 +18,18 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "dashboard" */ "../views/Dashboard.vue")
             }, {
+                path: "/TeacherAddForm",
+                name: "teacheraddform",
+                meta: {
+                    // permission: [],
+                    title: '添加教师'
+                },
+                component: () => import ( /* webpackChunkName: "teacheraddform" */ "../views/TeacherAddForm.vue")
+            },{
                 path: "/table",
                 name: "basetable",
                 meta: {
-                    permission: [],
+                    // permission: [],
                     title: '表格'
                 },
                 component: () => import ( /* webpackChunkName: "table" */ "../views/BaseTable.vue")

@@ -56,7 +56,7 @@ export default {
                                 title: "查看/编辑教师信息",
                             },
                             {
-                                index: "/form",
+                                index: "/TeacherAddForm",
                                 title: "添加教师",
                             }
                         ]
@@ -127,6 +127,27 @@ export default {
               index: "student",
               title: "学生",
               subs: [
+                {
+                  title: "班课查看",
+                  index: "/table",
+                },
+                {
+                  title: "项目任务管理",
+                  subs: [
+                    {
+                      title: "小组管理",
+                      index: "/table",
+                    },
+                    {
+                      title: "项目任务管理",
+                      index: "/table",
+                    }
+                  ]
+                },
+                {
+                  title: "案例管理",
+                  index: "/table",
+                }
               ]
             },
             {
