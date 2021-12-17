@@ -5,7 +5,7 @@ const routes = [
     {
         path: '/',
         redirect: '/dashboard'
-    }, {
+    },{
         path: "/",
         name: "Home",
         component: Home,
@@ -17,14 +17,30 @@ const routes = [
                     title: '系统首页'
                 },
                 component: () => import ( /* webpackChunkName: "dashboard" */ "../views/Dashboard.vue")
-            }, {
-                path: "/TeacherAddForm",
+            },{
+                path: "/teacheraddform",
                 name: "teacheraddform",
                 meta: {
                     // permission: [],
                     title: '添加教师'
                 },
-                component: () => import ( /* webpackChunkName: "teacheraddform" */ "../views/TeacherAddForm.vue")
+                component: () => import ( /* webpackChunkName: "teacheraddform" */ "../views/manager/TeacherAddForm.vue")
+            },{
+                path: "/teacherliststabs",
+                name: "teacherliststabs",
+                meta: {
+                    // permission: [],
+                    title: '教师列表'
+                },
+                component: () => import ( /* webpackChunkName: "teacherliststabs" */ "../views/manager/TeacherListsTabs.vue")
+            },{
+                path: "/courseliststabs",
+                name: "courseliststabs",
+                meta: {
+                    // permission: [],
+                    title: '教师列表'
+                },
+                component: () => import ( /* webpackChunkName: "courseliststabs" */ "../views/manager/CourseListsTabs.vue")
             },{
                 path: "/table",
                 name: "basetable",

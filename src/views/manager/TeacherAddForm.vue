@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i> 管理员
+                    <i class="el-icon-lx-people"></i> 管理员
                 </el-breadcrumb-item>
                 <el-breadcrumb-item>教师添加</el-breadcrumb-item>
             </el-breadcrumb>
@@ -57,7 +57,6 @@ export default {
         };
 
         return {
-            options,
             rules,
             formRef,
             form,

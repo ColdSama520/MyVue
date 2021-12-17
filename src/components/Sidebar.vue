@@ -52,11 +52,11 @@ export default {
                         title: "教师管理",
                         subs: [
                             {
-                                index: "/table",
-                                title: "查看/编辑教师信息",
+                                index: "/teacherliststabs",
+                                title: "查看教师信息",
                             },
                             {
-                                index: "/TeacherAddForm",
+                                index: "/teacheraddform",
                                 title: "添加教师",
                             }
                         ]
@@ -65,7 +65,7 @@ export default {
                         title: "课程查看",
                         subs: [
                             {
-                                index: "/table",
+                                index: "/courseliststabs",
                                 title: "查看课程",
                             }
                         ]
