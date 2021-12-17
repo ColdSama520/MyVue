@@ -33,14 +33,30 @@ const routes = [
                     title: '教师列表'
                 },
                 component: () => import ( /* webpackChunkName: "teacherliststabs" */ "../views/manager/TeacherListsTabs.vue")
+            }, {
+                path: "/teachermessage",
+                name: "teachermessage",
+                meta: {
+                    // permission: [],
+                    title: '教师详情'
+                },
+                component: () => import ( /* webpackChunkName: "teachermessage" */ "../views/manager/TeacherMessage.vue")
             },{
                 path: "/courseliststabs",
                 name: "courseliststabs",
                 meta: {
                     // permission: [],
-                    title: '教师列表'
+                    title: '班课列表'
                 },
                 component: () => import ( /* webpackChunkName: "courseliststabs" */ "../views/manager/CourseListsTabs.vue")
+            },{
+                path: "/coursemessage",
+                name: "coursemessage",
+                meta: {
+                    // permission: [],
+                    title: '班课信息'
+                },
+                component: () => import ( /* webpackChunkName: "coursemessage" */ "../views/manager/CourseMessage.vue")
             },{
                 path: "/table",
                 name: "basetable",
