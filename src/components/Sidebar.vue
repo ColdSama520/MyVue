@@ -82,15 +82,15 @@ export default {
                         subs: [
                           {
                             title: "正常班课",
-                            index: "/table",
+                            index: "/classmessage_common",
                           },
                           {
                             title: "归档班课",
-                            index: "/table",
+                            index: "/classmessage_uncommon",
                           },
                           {
                             title: "学生浏览",
-                            index: "/table",
+                            index: "/studentliststabs",
                           },
                         ]
                     },

@@ -58,6 +58,38 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "coursemessage" */ "../views/manager/CourseMessage.vue")
             },{
+                path: "/classmessage_common",
+                name: "classmessage_common",
+                meta: {
+                    // permission: [],
+                    title: '正常班课'
+                },
+                component: () => import ( /* webpackChunkName: "classmessage_common" */ "../views/teacher/ClassMessage_common.vue")
+            },{
+                path: "/classmessage_common_add",
+                name: "classmessage_common_add",
+                meta: {
+                    // permission: [],
+                    title: '添加班课'
+                },
+                component: () => import ( /* webpackChunkName: "classmessage_common_add" */ "../views/teacher/ClassMessage_common_add.vue")
+            },{
+                path: "/classmessage_uncommon",
+                name: "classmessage_uncommon",
+                meta: {
+                    // permission: [],
+                    title: '归档班课'
+                },
+                component: () => import ( /* webpackChunkName: "classmessage_uncommon" */ "../views/teacher/ClassMessage_uncommon.vue")
+            },{
+                path: "/studentliststabs",
+                name: "studentliststabs",
+                meta: {
+                    // permission: [],
+                    title: '学生浏览'
+                },
+                component: () => import ( /* webpackChunkName: "studentliststabs" */ "../views/teacher/StudentListsTabs.vue")
+            },{
                 path: "/table",
                 name: "basetable",
                 meta: {
