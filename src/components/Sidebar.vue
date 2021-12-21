@@ -116,7 +116,7 @@ export default {
                       subs: [
                         {
                           title: "案例浏览",
-                          index: "/table",
+                          index: "/classliststabs_case",
                         }
                       ]
                     }

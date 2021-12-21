@@ -154,6 +154,30 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "group_add" */ "../views/teacher/Group_add.vue")
             },{
+                path: "/classliststabs_case",
+                name: "classliststabs_case",
+                meta: {
+                    // permission: [],
+                    title: '案例浏览'
+                },
+                component: () => import ( /* webpackChunkName: "classliststabs_case" */ "../views/teacher/ClassListsTabs_case.vue")
+            },{
+                path: "/casemessage",
+                name: "casemessage",
+                meta: {
+                    // permission: [],
+                    title: '案例详情'
+                },
+                component: () => import ( /* webpackChunkName: "casemessage" */ "../views/teacher/CaseMessage.vue")
+            },{
+                path: "/case_add",
+                name: "case_add",
+                meta: {
+                    // permission: [],
+                    title: '添加案例'
+                },
+                component: () => import ( /* webpackChunkName: "case_add" */ "../views/teacher/Case_add.vue")
+            },{
                 path: "/table",
                 name: "basetable",
                 meta: {
