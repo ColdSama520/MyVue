@@ -129,7 +129,7 @@ export default {
               subs: [
                 {
                   title: "班课查看",
-                  index: "/table",
+                  index: "/classliststabs_student",
                 },
                 {
                   title: "项目任务管理",
