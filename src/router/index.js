@@ -126,9 +126,33 @@ const routes = [
                 name: "project_add",
                 meta: {
                     // permission: [],
-                    title: '项目详情'
+                    title: '添加项目'
                 },
                 component: () => import ( /* webpackChunkName: "project_add" */ "../views/teacher/Project_add.vue")
+            },{
+                path: "/classliststabs_group",
+                name: "classliststabs_group",
+                meta: {
+                    // permission: [],
+                    title: '小组浏览'
+                },
+                component: () => import ( /* webpackChunkName: "classliststabs_group" */ "../views/teacher/ClassListsTabs_group.vue")
+            },{
+                path: "/groupmessage",
+                name: "groupmessage",
+                meta: {
+                    // permission: [],
+                    title: '小组详情'
+                },
+                component: () => import ( /* webpackChunkName: "groupmessage" */ "../views/teacher/GroupMessage.vue")
+            },{
+                path: "/group_add",
+                name: "group_add",
+                meta: {
+                    // permission: [],
+                    title: '添加小组'
+                },
+                component: () => import ( /* webpackChunkName: "group_add" */ "../views/teacher/Group_add.vue")
             },{
                 path: "/table",
                 name: "basetable",

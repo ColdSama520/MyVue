@@ -103,7 +103,7 @@ export default {
                           },
                           {
                             title: "小组浏览",
-                            index: "/table",
+                            index: "/classliststabs_group",
                           },
                           {
                             title: "项目任务",

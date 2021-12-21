@@ -6,18 +6,15 @@
           <i class="el-icon-lx-peoplefill"></i> 教师
         </el-breadcrumb-item>
         <el-breadcrumb-item>项目管理</el-breadcrumb-item>
-        <el-breadcrumb-item>项目浏览</el-breadcrumb-item>
-        <el-breadcrumb-item>项目详情</el-breadcrumb-item>
+        <el-breadcrumb-item>小组浏览</el-breadcrumb-item>
+        <el-breadcrumb-item>小组详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container">
       <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-        <el-table-column prop="project_id" label="项目ID"></el-table-column>
         <el-table-column prop="project_name" label="项目名"></el-table-column>
-        <el-table-column prop="project_introduction" label="项目内容介绍"></el-table-column>
-        <el-table-column prop="project_number_limit" label="每组人数限制"></el-table-column>
-        <el-table-column prop="project_instructions" label="其他说明"></el-table-column>
-        <el-table-column prop="course_id" label="班课ID"></el-table-column>
+        <el-table-column prop="student_id" label="组长"></el-table-column>
+        <el-table-column prop="sg_student_id" label="组员"></el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
             <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑
@@ -28,7 +25,7 @@
       </el-table>
         <br>
       <div class="handle-row">
-        <el-button type="primary" @click="handleRead">小组管理</el-button>
+        <el-button type="primary" @click="handleRead">项目任务管理</el-button>
       </div>
     </div>
       <el-dialog title="编辑" v-model="editVisible" width="30%">
@@ -58,10 +55,10 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
 
 export default {
-      name: "projectmessage",
+      name: "groupmessage",
       methods:{ //跳转页面
         handleRead(){
-          this.$router.push({ path:'/groupmessage' })
+          this.$router.push({ path:'/projectmessage' })
         }
       },
       setup() {
