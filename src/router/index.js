@@ -90,6 +90,22 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "studentliststabs" */ "../views/teacher/StudentListsTabs.vue")
             },{
+                path: "/student_add",
+                name: "student_add",
+                meta: {
+                    // permission: [],
+                    title: '添加学生'
+                },
+                component: () => import ( /* webpackChunkName: "student_add" */ "../views/teacher/Student_add.vue")
+            },{
+                path: "/studentmessage",
+                name: "studentmessage",
+                meta: {
+                    // permission: [],
+                    title: '学生详情'
+                },
+                component: () => import ( /* webpackChunkName: "studentmessage" */ "../views/teacher/StudentMessage.vue")
+            },{
                 path: "/table",
                 name: "basetable",
                 meta: {

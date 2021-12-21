@@ -5,26 +5,26 @@
                 <el-breadcrumb-item>
                     <i class="el-icon-lx-people"></i> 教师
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>添加班课</el-breadcrumb-item>
+                <el-breadcrumb-item>添加班课学生</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="form-box">
                 <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
-                    <el-form-item label="课程名称" prop="name">
+                    <el-form-item label="用户名" prop="id">
+                        <el-input v-model="form.id"></el-input>
+                    </el-form-item>
+                    <el-form-item label="学生姓名" prop="name">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                  <el-form-item label="开课年份" prop="date">
-                    <el-input v-model="form.date"></el-input>
-                  </el-form-item>
-                  <el-form-item label="学生班级" prop="class">
-                    <el-input v-model="form.class"></el-input>
-                  </el-form-item>
+                      <el-form-item label="学生班级" prop="class">
+                        <el-input v-model="form.class"></el-input>
+                      </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">提交</el-button>
                         <el-button @click="onReset">重置</el-button>
                     </el-form-item>
-                    <p class="login-tips">Tips : 授课教师默认为当前教师，课程属性为正常班课。</p>
+                    <p class="login-tips">Tips : 密码默认为123456。</p>
                 </el-form>
             </div>
         </div>
@@ -35,23 +35,23 @@
 import { reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
 export default {
-    name: "classmessage_common_add",
+    name: "student_add",
     setup() {
         const rules = {
-            name: [
-            { required: true, message: "请输入班课名称", trigger: "blur" },
+            id: [
+                { required: true, message: "请输入学生学号", trigger: "blur" },
             ],
-            date: [
-              { required: true, message: "请输入开课日期", trigger: "blur" },
+            name: [
+            { required: true, message: "请输入学生姓名", trigger: "blur" },
             ],
             class: [
-            { required: true, message: "请输入开课班级", trigger: "blur" },
+            { required: true, message: "请输入学生班级", trigger: "blur" },
           ],
         };
         const formRef = ref(null);
         const form = reactive({
+            id: "",
             name: "",
-            date: "",
             class: "",
         });
         // 提交

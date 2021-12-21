@@ -18,7 +18,7 @@
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
                   <el-form-item label="联系方式" prop="phone">
-                    <el-input v-model="form.phont"></el-input>
+                    <el-input v-model="form.phone"></el-input>
                   </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">提交</el-button>

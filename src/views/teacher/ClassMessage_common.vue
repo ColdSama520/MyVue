@@ -34,9 +34,9 @@
         <el-table-column prop="date" label="上课人数"></el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
-            <el-button type="text" icon="el-icon-edit">编辑
+            <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>
-            <el-button type="text" icon="el-icon-delete" class="red">删除</el-button>
+            <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,6 +44,22 @@
         <el-button type="primary" @click="handleRead">添加班课</el-button>
       </div>
     </div>
+      <el-dialog title="编辑" v-model="editVisible" width="30%">
+          <el-form label-width="70px">
+              <el-form-item label="用户名">
+                  <el-input v-model="form.name"></el-input>
+              </el-form-item>
+              <el-form-item label="地址">
+                  <el-input v-model="form.address"></el-input>
+              </el-form-item>
+          </el-form>
+          <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="editVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="saveEdit">确 定</el-button>
+                </span>
+          </template>
+      </el-dialog>
 
 
   </div>
@@ -55,28 +71,68 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
 
 export default {
-  name: "classmessage_common",
-  methods:{ //跳转页面
-    handleRead(){
-      this.$router.push({ path:'/classmessage_common_add' })
-    }
-  },
-  setup() {
-    const query = reactive({
-      name: "",
-    });
-    const tableData = ref([]);
-    // 获取表格数据
-    const getData = () => {
-      fetchData(query).then((res) => {
-        tableData.value = res.list;
+      name: "classmessage_common",
+      methods:{ //跳转页面
+        handleRead(){
+          this.$router.push({ path:'/classmessage_common_add' })
+        }
+      },
+      setup() {
+        const query = reactive({
+          name: "",
+        });
+        const tableData = ref([]);
+        // 获取表格数据
+        const getData = () => {
+          fetchData(query).then((res) => {
+            tableData.value = res.list;
+          });
+        };
+        getData();
+
+      // 删除操作
+      const handleDelete = (index) => {
+          // 二次确认删除
+          ElMessageBox.confirm("确定要删除吗？", "提示", {
+              type: "warning",
+          })
+              .then(() => {
+                  ElMessage.success("删除成功");
+                  tableData.value.splice(index, 1);
+              })
+              .catch(() => {});
+      };
+
+      // 表格编辑时弹窗和保存
+      const editVisible = ref(false);
+      let form = reactive({
+          name: "",
+          address: "",
       });
-    };
-    getData();
+      let idx = -1;
+      const handleEdit = (index, row) => {
+          idx = index;
+          Object.keys(form).forEach((item) => {
+              form[item] = row[item];
+          });
+          editVisible.value = true;
+      };
+      const saveEdit = () => {
+          editVisible.value = false;
+          ElMessage.success(`修改第 ${idx + 1} 行成功`);
+          Object.keys(form).forEach((item) => {
+              tableData.value[idx][item] = form[item];
+          });
+      };
 
     return {
-      query,
-      tableData,
+        query,
+        tableData,
+        form,
+        editVisible,
+        handleDelete,
+        handleEdit,
+        saveEdit,
     };
   },
 };

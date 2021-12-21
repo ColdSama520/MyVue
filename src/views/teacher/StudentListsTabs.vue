@@ -15,13 +15,13 @@
                     <el-table :data="state.unread" :show-header="false" style="width: 100%">
                         <el-table-column>
                             <template #default="scope">
-                                <span class="message-title">{{scope.row.title}}</span>
+                                <span class="message-title" @click="handleMessage()">{{scope.row.title}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column prop="date" width="180"></el-table-column>
                         <el-table-column width="120">
                             <template #default="scope">
-                                <el-button size="small" @click="handleRead()">详细信息</el-button>
+                                <el-button size="small" @click="handleRead()">添加学生</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -36,9 +36,12 @@ import { ref, reactive } from "vue";
 export default {
     name: "studentliststabs",
     methods:{ //跳转页面
-      handleRead(){
-        this.$router.push({ path:'/teachermessage'  })
-      }
+        handleRead(){
+        this.$router.push({ path:'/student_add'  })
+        },
+        handleMessage(){
+            this.$router.push({ path:'/studentmessage'  })
+        },
     },
     setup() {
         const message = ref("first");
