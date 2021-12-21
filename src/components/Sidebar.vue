@@ -99,7 +99,7 @@ export default {
                         subs: [
                           {
                             title: "项目浏览",
-                            index: "/table",
+                            index: "/classliststabs_project",
                           },
                           {
                             title: "小组浏览",

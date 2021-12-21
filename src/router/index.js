@@ -106,6 +106,30 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "studentmessage" */ "../views/teacher/StudentMessage.vue")
             },{
+                path: "/classliststabs_project",
+                name: "classliststabs_project",
+                meta: {
+                    // permission: [],
+                    title: '项目浏览'
+                },
+                component: () => import ( /* webpackChunkName: "classliststabs_project" */ "../views/teacher/ClassListsTabs_project.vue")
+            },{
+                path: "/projectmessage",
+                name: "projectmessage",
+                meta: {
+                    // permission: [],
+                    title: '项目详情'
+                },
+                component: () => import ( /* webpackChunkName: "projectmessage" */ "../views/teacher/ProjectMessage.vue")
+            },{
+                path: "/project_add",
+                name: "project_add",
+                meta: {
+                    // permission: [],
+                    title: '项目详情'
+                },
+                component: () => import ( /* webpackChunkName: "project_add" */ "../views/teacher/Project_add.vue")
+            },{
                 path: "/table",
                 name: "basetable",
                 meta: {
