@@ -36,7 +36,7 @@
                             <el-input v-model="form.desc"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit">保存</el-button>
+                            <el-button type="primary" @click="onSubmit()">保存</el-button>
                         </el-form-item>
                     </el-form>
                 </el-card>
@@ -65,6 +65,7 @@ import "cropperjs/dist/cropper.css";
 import avatar from "../assets/img/img.jpg";
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import {useRouter} from "vue-router";
 export default {
     name: "user",
     components: {
@@ -76,33 +77,33 @@ export default {
             new: "",
             desc: "不可能！我的代码怎么可能会有bug！",
         });
-        const alter = ref(null);
+        const param = reactive({
+          user_id: "",
+          user_pwd: "",
+        })
+        const router = useRouter();
         const onSubmit = () => {
-          alter.value.validate((valid) => {
-            if (valid) {
-              axios.get('http://localhost:9090/api/login', { params: form })
-                  //成功返回
-                  .then(response => {
-                    console.log(response);
-                    if(response.status === 200) {
-                      ElMessage.success("登录成功");
-                    }
-                    else{
-                      ElMessage.error("登录失败");
-                      return false;
-                    }
-                  })
-                  //失败返回
-                  .catch(error => {
-                    ElMessage.error("登录失败");
-                    console.log(error);
-                    return false;
-                  })
-            } else {
-              ElMessage.error("登录失败");
-              return false;
-            }
-          });
+          param.user_id = name;
+          param.user_pwd = form.new;
+          axios.get('http://localhost:9090/api/updatePwd', { params: param })
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if(response.status === 200) {
+                  ElMessage.success("保存成功");
+                  router.push("/login");
+                }
+                else{
+                  ElMessage.error("保存失败");
+                  return false;
+                }
+              })
+              //失败返回
+              .catch(error => {
+                ElMessage.error("保存失败");
+                console.log(error);
+                return false;
+              })
         };
 
         const avatarImg = ref(avatar);
@@ -142,6 +143,7 @@ export default {
         return {
             name,
             form,
+            param,
             onSubmit,
             cropper,
             avatarImg,
