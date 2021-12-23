@@ -194,13 +194,21 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "classmessage_student" */ "../views/student/ClassMessage_student.vue")
             },{
-                path: "/1234",
-                name: "",
+                path: "/projectmessage_student",
+                name: "projectmessage_student",
                 meta: {
                     // permission: [],
                     title: '项目详情'
                 },
-                component: () => import ( /* webpackChunkName: "case_add" */ "../views/teacher/Case_add.vue")
+                component: () => import ( /* webpackChunkName: "case_add" */ "../views/student/ProjectMessage_student.vue")
+            },{
+                path: "/caseliststabs",
+                name: "caseliststabs",
+                meta: {
+                    // permission: [],
+                    title: '案例管理'
+                },
+                component: () => import ( /* webpackChunkName: "caseliststabs" */ "../views/student/CaseListsTabs.vue")
             },{
                 path: "/table",
                 name: "basetable",

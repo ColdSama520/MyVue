@@ -33,7 +33,7 @@
 <script>
 import { ref, reactive } from "vue";
 export default {
-    name: "Caseliststabs",
+    name: "caseliststabs",
     methods:{ //跳转页面
         handleRead(){
         this.$router.push({ path:'/case_add'  })

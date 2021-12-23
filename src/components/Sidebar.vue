@@ -146,7 +146,7 @@ export default {
                 },
                 {
                   title: "案例管理",
-                  index: "/table",
+                  index: "/caseliststabs",
                 }
               ]
             },

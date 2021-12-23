@@ -36,7 +36,7 @@ export default {
     name: "classliststabs_student",
     methods:{ //跳转页面
         handleRead(){
-        this.$router.push({ path:'/'  })
+        this.$router.push({ path:'/projectmessage_student'  })
         },
         handleMessage(){
             this.$router.push({ path:'/classmessage_student'  })
