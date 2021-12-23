@@ -29,9 +29,6 @@
                     </template>
                     <el-form label-width="90px">
                         <el-form-item label="用户名："> {{ name }} </el-form-item>
-                        <el-form-item label="旧密码：">
-                            <el-input type="password" v-model="form.old"></el-input>
-                        </el-form-item>
                         <el-form-item label="新密码：">
                             <el-input type="password" v-model="form.new"></el-input>
                         </el-form-item>
@@ -66,6 +63,8 @@ import { reactive, ref } from "vue";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import avatar from "../assets/img/img.jpg";
+import axios from "axios";
+import {ElMessage} from "element-plus";
 export default {
     name: "user",
     components: {
@@ -74,11 +73,37 @@ export default {
     setup() {
         const name = localStorage.getItem("ms_username");
         const form = reactive({
-            old: "",
             new: "",
             desc: "不可能！我的代码怎么可能会有bug！",
         });
-        const onSubmit = () => {};
+        const alter = ref(null);
+        const onSubmit = () => {
+          alter.value.validate((valid) => {
+            if (valid) {
+              axios.get('http://localhost:9090/api/login', { params: form })
+                  //成功返回
+                  .then(response => {
+                    console.log(response);
+                    if(response.status === 200) {
+                      ElMessage.success("登录成功");
+                    }
+                    else{
+                      ElMessage.error("登录失败");
+                      return false;
+                    }
+                  })
+                  //失败返回
+                  .catch(error => {
+                    ElMessage.error("登录失败");
+                    console.log(error);
+                    return false;
+                  })
+            } else {
+              ElMessage.error("登录失败");
+              return false;
+            }
+          });
+        };
 
         const avatarImg = ref(avatar);
         const imgSrc = ref("");

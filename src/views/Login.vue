@@ -58,22 +58,14 @@ export default {
     const submitForm = () => {
       login.value.validate((valid) => {
         if (valid) {
-          // login.axios.post('api/login',param).then(res=>{
-          //   console.log(res)
-          //   if(res.data === 200){
-          //     alert('登陆成功');
-          //   }
-          //   else{
-          //     alert('登陆失败');
-          //   }
-          // })
           axios.get('http://localhost:9090/api/login', { params: param })
               //成功返回
               .then(response => {
                 console.log(response);
-                if(response.data === 200) {
+                if(response.status === 200) {
                   ElMessage.success("登录成功");
                   localStorage.setItem("ms_username", param.user_id);
+                  localStorage.setItem("ms_role", response.data);
                   router.push("/");
                 }
                 else{
@@ -83,10 +75,12 @@ export default {
               })
               //失败返回
               .catch(error => {
+                ElMessage.error("登录失败");
                 console.log(error);
                 return false;
               })
         } else {
+          ElMessage.error("登录失败");
           return false;
         }
       });

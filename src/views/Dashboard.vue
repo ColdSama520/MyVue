@@ -18,10 +18,10 @@
                         </div>
                     </template>
                     Vue
-                    <el-progress :percentage="71.3" color="#42b983"></el-progress>JavaScript
-                    <el-progress :percentage="24.1" color="#f1e05a"></el-progress>CSS
-                    <el-progress :percentage="13.7"></el-progress>HTML
-                    <el-progress :percentage="5.9" color="#f56c6c"></el-progress>
+                    <el-progress :percentage="81" color="#42b983"></el-progress>JavaScript
+                    <el-progress :percentage="10.7" color="#f1e05a"></el-progress>CSS
+                    <el-progress :percentage="1.9"></el-progress>HTML
+                    <el-progress :percentage="0.4" color="#f56c6c"></el-progress>
                 </el-card>
             </el-col>
             <el-col :span="16">
@@ -31,7 +31,7 @@
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-user-solid grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">1234</div>
+                                    <div class="grid-num">1214</div>
                                     <div>用户访问量</div>
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                             <div class="grid-content grid-con-2">
                                 <i class="el-icon-message-solid grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">321</div>
+                                    <div class="grid-num">2000</div>
                                     <div>系统消息</div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-s-goods grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
+                                    <div class="grid-num">1004</div>
                                     <div>数量</div>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@ export default {
     components: { Schart },
     setup() {
         const name = localStorage.getItem("ms_username");
-        const role = name === "admin" ? "超级管理员" : "普通用户";
+        const role = localStorage.getItem("ms_role");``
 
         const todoList = reactive([
             {
