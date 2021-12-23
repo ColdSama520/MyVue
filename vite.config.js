@@ -6,14 +6,13 @@ export default {
     optimizeDeps: {
         include: ['schart.js']
     },
-    devServer: {
-        proxy: {
-            '/api': {
-                target: 'http://localhost:9090',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': ''
-                }
+    proxy: {
+        '/api': {
+            target: 'http://localhost:9090',//对应自己的接口
+            changeOrigin: true,
+            ws: true,
+            pathRewrite: {
+                '^/api': '/'
             }
         }
     }
