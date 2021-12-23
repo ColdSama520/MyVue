@@ -6,13 +6,16 @@ export default {
     optimizeDeps: {
         include: ['schart.js']
     },
-    proxyTable: {
-        '/api': {
-            target: 'http://localhost:9090',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/api': ''
+    devServer: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:9090',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
             }
         }
     }
+
 }

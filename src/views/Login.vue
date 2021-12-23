@@ -56,6 +56,13 @@ export default {
         const login = ref(null);
         const submitForm = () => {
             login.value.validate((valid) => {
+                // if(!valid) return;
+                // axios.post('api/login', param).then(res => {
+                //     console.log(res);
+                // });
+                // ElMessage.success("登录成功");
+                // localStorage.setItem("ms_username", param.username);
+                // router.push("/");
                 if (valid) {
                     ElMessage.success("登录成功");
                     localStorage.setItem("ms_username", param.username);
