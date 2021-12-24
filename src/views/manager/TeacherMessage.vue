@@ -10,21 +10,21 @@
       </el-breadcrumb>
     </div>
     <div class="container">
-      <el-table>
+      <el-table :data="teacher.teacherData" border class="teacher">
         <el-table-column prop="teacher_id" label="教师ID"></el-table-column>
         <el-table-column prop="teacher_name" label="教师姓名"></el-table-column>
         <el-table-column prop="teacher_phone" label="联系方式"></el-table-column>
       </el-table>
-      <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+      <el-table :data="course.courseData" border class="course" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="course_id" label="课程ID"></el-table-column>
         <el-table-column prop="course_name" label="课程名"></el-table-column>
         <el-table-column prop="course_start_year" label="开课日期"></el-table-column>
         <el-table-column prop="course_is_archive" label="是否归档">
           <template #default="scope">
             <el-tag :type="
-                                scope.row.state === '成功'
+                                scope.row.course_is_archive === '是'
                                     ? 'success'
-                                    : scope.row.state === '失败'
+                                    : scope.row.course_is_archive === '否'
                                     ? 'danger'
                                     : ''
                             ">归档</el-tag>
@@ -42,25 +42,49 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api/index";
+import axios from "axios";
 
 export default {
   name: "teachermessage",
   setup() {
-    const query = reactive({
-      name: "",
+    const teacher = reactive({
+        teacherData: [{
+            teacher_id: localStorage.getItem("tc_message_id"),
+            teacher_name: localStorage.getItem("tc_message_name"),
+            teacher_phone: localStorage.getItem("tc_message_phone"),
+        }]
     });
-    const tableData = ref([]);
+    const course = reactive({
+        courseData: []
+    });
+    const tableData = reactive({
+        teacher_id: localStorage.getItem("tc_message_id"),
+    })
     // 获取表格数据
     const getData = () => {
-      fetchData(query).then((res) => {
-        tableData.value = res.list;
-      });
+        axios.get('http://localhost:9090/Course/teacherCourse', { params : tableData })
+            //成功返回
+            .then(response => {
+                console.log(response);
+                if(response.status === 200) {
+                    course.courseData = response.data;
+                }
+                else{
+                    return false;
+                }
+            })
+            //失败返回
+            .catch(error => {
+                console.log(error);
+                return false;
+            })
     };
     getData();
 
     return {
-      query,
-      tableData,
+        course,
+        teacher,
+        tableData,
     };
   },
 };
@@ -79,9 +103,13 @@ export default {
   width: 300px;
   display: inline-block;
 }
-.table {
+.course {
   width: 100%;
   font-size: 14px;
+}
+.teacher {
+    width: 100%;
+    font-size: 14px;
 }
 .red {
   color: #ff0000;
