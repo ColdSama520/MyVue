@@ -11,13 +11,13 @@
         <div class="container">
             <div class="form-box">
                 <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
-                    <el-form-item label="用户名" prop="id">
+                    <el-form-item label="用户名" prop="teacher_id">
                         <el-input v-model="form.teacher_id"></el-input>
                     </el-form-item>
-                    <el-form-item label="教师姓名" prop="name">
+                    <el-form-item label="教师姓名" prop="teacher_name">
                       <el-input v-model="form.teacher_name"></el-input>
                     </el-form-item>
-                  <el-form-item label="联系方式" prop="phone">
+                  <el-form-item label="联系方式" prop="teacher_phone">
                     <el-input v-model="form.teacher_phone"></el-input>
                   </el-form-item>
                     <el-form-item>

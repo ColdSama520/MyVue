@@ -27,11 +27,11 @@
                                     : scope.row.course_is_archive === '否'
                                     ? 'danger'
                                     : ''
-                            ">归档</el-tag>
+                            ">{{scope.row.course_is_archive}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="student_class" label="上课班级"></el-table-column>
-        <el-table-column prop="date" label="上课人数"></el-table-column>
+        <el-table-column prop="student_number" label="上课人数"></el-table-column>
       </el-table>
     </div>
 
