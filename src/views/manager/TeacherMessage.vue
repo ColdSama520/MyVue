@@ -55,10 +55,10 @@ export default {
         }]
     });
     const course = reactive({
-        courseData: []
+      courseData: []
     });
     const tableData = reactive({
-        teacher_id: localStorage.getItem("tc_message_id"),
+      teacher_id: localStorage.getItem("tc_message_id"),
     })
     // 获取表格数据
     const getData = () => {
