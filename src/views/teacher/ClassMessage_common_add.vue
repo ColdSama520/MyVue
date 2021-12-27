@@ -89,7 +89,7 @@ export default {
                         console.log(response);
                         if (response.status === 200) {
                           ElMessage.success("添加课程成功！请输入或导入学生！");
-                          router.push("/");
+                          router.push("/student_add");
                         } else {
                           return false;
                         }

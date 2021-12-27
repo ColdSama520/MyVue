@@ -11,6 +11,10 @@
       </el-breadcrumb>
     </div>
     <div class="container">
+        <div class="handle-box">
+            <el-input v-model="searchTable.student_id" placeholder="学生ID" class="handle-input mr10"></el-input>
+            <el-button type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
+        </div>
       <el-table :data="student.studentData" border class="student" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="student_id" label="学生学号"></el-table-column>
         <el-table-column prop="student_name" label="学生姓名"></el-table-column>
@@ -117,14 +121,47 @@ export default {
         });
     };
 
+        const searchTable = reactive({
+            course_id: tableData.course_id,
+            student_id: '',
+        })
+
+        const handleSearch = () => {
+            if(searchTable.student_id === '')
+                getData();
+            else {
+                axios.get('http://localhost:9090/Student/CourseStudentById', {params: searchTable})
+                    //成功返回
+                    .then(response => {
+                        console.log(response);
+                        if (response.status === 200) {
+                            if (response.data.length === 0) {
+                                ElMessage.error("请输入选择该班课的学生ID");
+                            }else{
+                                student.studentData = response.data;
+                            }
+                        } else {
+                            return false;
+                        }
+                    })
+                    //失败返回
+                    .catch(error => {
+                        console.log(error);
+                        return false;
+                    })
+            }
+        };
+
     return {
         student,
         tableData,
         form,
         editVisible,
+        searchTable,
         handleEdit,
         handleDelete,
         saveEdit,
+        handleSearch,
     };
   },
 };
