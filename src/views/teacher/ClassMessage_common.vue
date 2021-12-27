@@ -134,14 +134,37 @@ export default {
               //成功返回
               .then(response => {
                 console.log(response);
-                if(response.status === 200) {
-                  ElMessage.success("修改成功");
-                  store.commit("clearTags");
-                  router.push('/classmessage_uncommon')
-                }
-                else{
-                  return false;
-                }
+                  ElMessageBox.confirm("确定要归档吗？", "提示", {
+                      type: "warning",
+                  })
+                      .then(() => {
+                          if(response.status === 200) {
+                              ElMessage.success("修改成功");
+                              store.commit("clearTags");
+                              router.push('/classmessage_uncommon')
+                          }
+                          else{
+                              return false;
+                          }
+                      })
+                      .catch(() => {
+                          axios.get('http://localhost:9090/Course/updateCommon', { params : {course_id: id} })
+                              //成功返回
+                              .then(response => {
+                                  console.log(response);
+                                  if(response.status === 200) {
+                                      router.go(0)
+                                  }
+                                  else{
+                                      return false;
+                                  }
+                              })
+                              //失败返回
+                              .catch(error => {
+                                  console.log(error);
+                                  return false;
+                              })
+                      });
               })
               //失败返回
               .catch(error => {
