@@ -53,115 +53,139 @@ import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
 import axios from "axios";
+import {useRouter} from "vue-router";
 
 export default {
     name: "studentmessage",
     methods:{ //跳转页面
     },
     setup() {
-    const student = reactive({
-      studentData: []
-    });
-      const tableData = reactive({
-        course_id: localStorage.getItem("c_message_id"),
-      })
-    // 获取表格数据
-    const getData = () => {
-      axios.get('http://localhost:9090/Student/CourseAllStudent', { params : tableData })
-          //成功返回
-          .then(response => {
-            console.log(response);
-            if(response.status === 200) {
-              student.studentData = response.data;
-            }
-            else{
-              return false;
-            }
-          })
-          //失败返回
-          .catch(error => {
-            console.log(error);
-            return false;
-          })
-    };
-    getData();
+        const router = useRouter();
 
-    // 删除操作
-    const handleDelete = (index) => {
-        // 二次确认删除
-        ElMessageBox.confirm("确定要删除吗？", "提示", {
-            type: "warning",
+        const student = reactive({
+          studentData: []
+        });
+          const tableData = reactive({
+            course_id: localStorage.getItem("c_message_id"),
+          })
+        // 获取表格数据
+        const getData = () => {
+          axios.get('http://localhost:9090/Student/CourseAllStudent', { params : tableData })
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if(response.status === 200) {
+                  student.studentData = response.data;
+                }
+                else{
+                  return false;
+                }
+              })
+              //失败返回
+              .catch(error => {
+                console.log(error);
+                return false;
+              })
+        };
+        getData();
+
+        const deleteData = reactive({
+            course_id: localStorage.getItem("c_message_id"),
+            student_id: "",
         })
-            .then(() => {
-                ElMessage.success("删除成功");
-                tableData.value.splice(index, 1);
+        // 删除操作
+        const handleDelete = (index) => {
+            deleteData.student_id = student.studentData[index].student_id;
+            // 二次确认删除
+            ElMessageBox.confirm("确定要删除吗？", "提示", {
+                type: "warning",
             })
-            .catch(() => {});
-    };
-
-    // 表格编辑时弹窗和保存
-    const editVisible = ref(false);
-    let form = reactive({
-        name: "",
-        address: "",
-    });
-    let idx = -1;
-    const handleEdit = (index, row) => {
-        idx = index;
-        Object.keys(form).forEach((item) => {
-            form[item] = row[item];
-        });
-        editVisible.value = true;
-    };
-    const saveEdit = () => {
-        editVisible.value = false;
-        ElMessage.success(`修改第 ${idx + 1} 行成功`);
-        Object.keys(form).forEach((item) => {
-            tableData.value[idx][item] = form[item];
-        });
-    };
-
-        const searchTable = reactive({
-            course_id: tableData.course_id,
-            student_id: '',
-        })
-
-        const handleSearch = () => {
-            if(searchTable.student_id === '')
-                getData();
-            else {
-                axios.get('http://localhost:9090/Student/CourseStudentById', {params: searchTable})
-                    //成功返回
-                    .then(response => {
-                        console.log(response);
-                        if (response.status === 200) {
-                            if (response.data.length === 0) {
-                                ElMessage.error("请输入选择该班课的学生ID");
-                            }else{
-                                student.studentData = response.data;
+                .then(() => {
+                    axios.get('http://localhost:9090/SC/deleteStudent', { params : deleteData })
+                        //成功返回
+                        .then(response => {
+                            console.log(response);
+                            if(response.status === 200) {
+                                ElMessage.success("删除成功");
+                                router.go(0)
                             }
-                        } else {
+                            else{
+                                return false;
+                            }
+                        })
+                        //失败返回
+                        .catch(error => {
+                            console.log(error);
                             return false;
-                        }
-                    })
-                    //失败返回
-                    .catch(error => {
-                        console.log(error);
-                        return false;
-                    })
-            }
+                        })
+                })
+                .catch(() => {});
         };
 
-    return {
-        student,
-        tableData,
-        form,
-        editVisible,
-        searchTable,
-        handleEdit,
-        handleDelete,
-        saveEdit,
-        handleSearch,
+        // 表格编辑时弹窗和保存
+        const editVisible = ref(false);
+        let form = reactive({
+            name: "",
+            address: "",
+        });
+        let idx = -1;
+        const handleEdit = (index, row) => {
+            idx = index;
+            Object.keys(form).forEach((item) => {
+                form[item] = row[item];
+            });
+            editVisible.value = true;
+        };
+        const saveEdit = () => {
+            editVisible.value = false;
+            ElMessage.success(`修改第 ${idx + 1} 行成功`);
+            Object.keys(form).forEach((item) => {
+                tableData.value[idx][item] = form[item];
+            });
+        };
+
+            const searchTable = reactive({
+                course_id: tableData.course_id,
+                student_id: '',
+            })
+
+            const handleSearch = () => {
+                if(searchTable.student_id === '')
+                    getData();
+                else {
+                    axios.get('http://localhost:9090/Student/CourseStudentById', {params: searchTable})
+                        //成功返回
+                        .then(response => {
+                            console.log(response);
+                            if (response.status === 200) {
+                                if (response.data.length === 0) {
+                                    ElMessage.error("请输入选择该班课的学生ID");
+                                }else{
+                                    student.studentData = response.data;
+                                }
+                            } else {
+                                return false;
+                            }
+                        })
+                        //失败返回
+                        .catch(error => {
+                            console.log(error);
+                            return false;
+                        })
+                }
+            };
+
+        return {
+            student,
+            tableData,
+            form,
+            editVisible,
+            searchTable,
+            deleteData,
+            handleEdit,
+            handleDelete,
+            saveEdit,
+            handleSearch,
     };
   },
 };

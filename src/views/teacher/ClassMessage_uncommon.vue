@@ -52,10 +52,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <br>
-      <div class="handle-row">
-        <el-button type="primary" @click="handleRead">添加班课</el-button>
-      </div>
     </div>
 
   </div>
