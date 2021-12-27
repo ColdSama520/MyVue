@@ -72,22 +72,44 @@ export default {
               sc.sc_id = student.student_id + localStorage.getItem("c_message_id");
               sc.student_id = student.student_id;
                 if (valid) {
-                  axios.get('http://localhost:9090/api/addStudent', { params: { user_id : student.student_id } })
+                  axios.get('http://localhost:9090/api/searchUser', { params: { user_id : student.student_id } })
                       //成功返回
                       .then(response => {
                         console.log(response);
                         if (response.status === 200) {
+                          if (response.data.length === 0) {
+                            axios.get('http://localhost:9090/api/addStudent', { params: { user_id : student.student_id } })
+                                //成功返回
+                                .then(response => {
+                                  console.log(response);
+                                  if (response.status === 200) {
+                                  }
+                                  else {
+                                    return false;
+                                  }
+                                })
+                            axios.get('http://localhost:9090/Student/add', { params: student })
+                                //成功返回
+                                .then(response => {
+                                  console.log(response);
+                                  if (response.status === 200) {
+                                  } else {
+                                    return false;
+                                  }
+                                })
+                          }else {
+                            axios.get('http://localhost:9090/Student/updateStudent', { params: student })
+                                //成功返回
+                                .then(response => {
+                                  console.log(response);
+                                  if (response.status === 200) {
+                                  } else {
+                                    return false;
+                                  }
+                                })
+                          }
                         }
                         else {
-                          return false;
-                        }
-                      })
-                  axios.get('http://localhost:9090/Student/add', { params: student })
-                      //成功返回
-                      .then(response => {
-                        console.log(response);
-                        if (response.status === 200) {
-                        } else {
                           return false;
                         }
                       })
