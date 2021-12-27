@@ -11,7 +11,7 @@
       </el-breadcrumb>
     </div>
     <div class="container">
-      <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+      <el-table :data="student.studentData" border class="student" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="student_id" label="学生学号"></el-table-column>
         <el-table-column prop="student_name" label="学生姓名"></el-table-column>
         <el-table-column prop="student_class" label="上课班级"></el-table-column>
@@ -48,21 +48,37 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
+import axios from "axios";
 
 export default {
     name: "studentmessage",
     methods:{ //跳转页面
     },
     setup() {
-    const query = reactive({
-      name: "",
+    const student = reactive({
+      studentData: []
     });
-    const tableData = ref([]);
+      const tableData = reactive({
+        course_id: localStorage.getItem("c_message_id"),
+      })
     // 获取表格数据
     const getData = () => {
-      fetchData(query).then((res) => {
-        tableData.value = res.list;
-      });
+      axios.get('http://localhost:9090/Student/CourseAllStudent', { params : tableData })
+          //成功返回
+          .then(response => {
+            console.log(response);
+            if(response.status === 200) {
+              student.studentData = response.data;
+            }
+            else{
+              return false;
+            }
+          })
+          //失败返回
+          .catch(error => {
+            console.log(error);
+            return false;
+          })
     };
     getData();
 
@@ -102,7 +118,7 @@ export default {
     };
 
     return {
-        query,
+        student,
         tableData,
         form,
         editVisible,
@@ -127,7 +143,7 @@ export default {
   width: 300px;
   display: inline-block;
 }
-.table {
+.student {
   width: 100%;
   font-size: 14px;
 }
