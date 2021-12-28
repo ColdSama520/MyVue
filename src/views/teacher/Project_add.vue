@@ -12,18 +12,21 @@
         </div>
         <div class="container">
             <div class="form-box">
-                <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
-                    <el-form-item label="项目名称" prop="name">
-                        <el-input v-model="form.name"></el-input>
+                <el-form ref="formRef" :rules="rules" :model="project" label-width="80px">
+                    <el-form-item label="项目ID" prop="project_id">
+                      <el-input v-model="project.project_id"></el-input>
                     </el-form-item>
-                    <el-form-item label="内容介绍" prop="introduction">
-                      <el-input v-model="form.introduction"></el-input>
+                    <el-form-item label="项目名称" prop="project_name">
+                        <el-input v-model="project.project_name"></el-input>
                     </el-form-item>
-                    <el-form-item label="人数限定" prop="number_limit">
-                    <el-input v-model="form.number_limit"></el-input>
+                    <el-form-item label="内容介绍" prop="project_introduction">
+                      <el-input v-model="project.project_introduction"></el-input>
                     </el-form-item>
-                    <el-form-item label="其他说明" prop="instructions">
-                        <el-input v-model="form.instructions"></el-input>
+                    <el-form-item label="人数限定" prop="project_number_limit">
+                    <el-input v-model="project.project_number_limit"></el-input>
+                    </el-form-item>
+                    <el-form-item label="其他说明" prop="project_instructions">
+                        <el-input v-model="project.project_instructions"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -39,34 +42,69 @@
 <script>
 import { reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
+import axios from "axios";
+import router from "../../router";
 export default {
     name: "project_add",
     setup() {
         const rules = {
-            name: [
+          project_id: [
+            { required: true, message: "请输入项目ID", trigger: "blur" },
+          ],
+          project_name: [
             { required: true, message: "请输入项目名称", trigger: "blur" },
             ],
-            introduction: [
+          project_introduction: [
             { required: true, message: "请输入项目介绍", trigger: "blur" },
             ],
-            number_limit: [
+          project_number_limit: [
                 { required: true, message: "请输入人数限制", trigger: "blur" },
             ],
         };
         const formRef = ref(null);
-        const form = reactive({
-            name: "",
-            introduction: "",
-            number_limit: "",
-            instructions: "",
+        const project = reactive({
+          project_id: "",
+          project_name: "",
+          project_introduction: "",
+          project_number_limit: "",
+          project_instructions: "",
+          course_id: localStorage.getItem("c_message_id"),
+        });
+        const group = reactive({
+          group_id: "",
+          group_name: "cs",
+          student_id: "",
+          project_id: "",
         });
         // 提交
         const onSubmit = () => {
             // 表单校验
             formRef.value.validate((valid) => {
                 if (valid) {
-                    console.log(form);
-                    ElMessage.success("提交成功！");
+                  group.group_id = "g" + localStorage.getItem("c_message_id") + project.project_id;
+                  group.project_id = project.project_id;
+                  axios.get('http://localhost:9090/Project/addProject', { params: project })
+                      //成功返回
+                      .then(response => {
+                        console.log(response);
+                        if (response.status === 200) {
+                          axios.get('http://localhost:9090/Group/addGroup', { params: group })
+                              //成功返回
+                              .then(response => {
+                                console.log(response);
+                                if (response.status === 200) {
+                                  ElMessage.success("添加成功!");
+                                  router.go(0);
+                                }
+                                else {
+                                  return false;
+                                }
+                              })
+                        }
+                        else {
+                          return false;
+                        }
+                      })
                 } else {
                     return false;
                 }
@@ -80,7 +118,8 @@ export default {
         return {
             rules,
             formRef,
-            form,
+            project,
+            group,
             onSubmit,
             onReset,
         };

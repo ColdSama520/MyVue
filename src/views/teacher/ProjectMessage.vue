@@ -11,10 +11,10 @@
       </el-breadcrumb>
     </div>
     <div class="container">
-<!--      <div class="handle-box">-->
-<!--        <el-input v-model="searchTable.student_id" placeholder="学生ID" class="handle-input mr10"></el-input>-->
-<!--        <el-button type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>-->
-<!--      </div>-->
+      <div class="handle-box">
+        <el-input v-model="searchTable.project_id" placeholder="项目ID" class="handle-input mr10"></el-input>
+        <el-button type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
+      </div>
       <el-table :data="project.projectData" border class="project" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="project_id" label="项目ID"></el-table-column>
         <el-table-column prop="project_name" label="项目名"></el-table-column>
@@ -187,15 +187,48 @@ export default {
             })
       };
 
+        const searchTable = reactive({
+          course_id: localStorage.getItem("c_message_id"),
+          project_id: '',
+        })
+
+        const handleSearch = () => {
+          if(searchTable.project_id === '')
+            getData();
+          else {
+            axios.get('http://localhost:9090/Project/ProjectCourseById', {params: searchTable})
+                //成功返回
+                .then(response => {
+                  console.log(response);
+                  if (response.status === 200) {
+                    if (response.data.length === 0) {
+                      ElMessage.error("请输入该班课的项目ID");
+                    }else{
+                      project.projectData = response.data;
+                    }
+                  } else {
+                    return false;
+                  }
+                })
+                //失败返回
+                .catch(error => {
+                  console.log(error);
+                  return false;
+                })
+          }
+        };
+
     return {
         project,
         tableData,
         form,
         editVisible,
         deleteData,
+        searchTable,
         handleDelete,
         handleEdit,
         saveEdit,
+        handleSearch,
     };
   },
 };
