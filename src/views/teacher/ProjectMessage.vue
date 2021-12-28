@@ -116,23 +116,38 @@ export default {
           })
               .then(() => {
                 deleteData.project_id = project.projectData[index].project_id;
-                axios.get('http://localhost:9090/Project/deleteProject', { params : deleteData })
-                    //成功返回
-                    .then(response => {
-                      console.log(response);
-                      if(response.status === 200) {
-                        ElMessage.success("删除成功");
-                        router.go(0);
-                      }
-                      else{
-                        return false;
-                      }
-                    })
-                    //失败返回
-                    .catch(error => {
-                      console.log(error);
-                      return false;
-                    })
+                  axios.get('http://localhost:9090/Group/deleteGroup', { params : deleteData })
+                      //成功返回
+                      .then(response => {
+                          console.log(response);
+                          if(response.status === 200) {
+                              axios.get('http://localhost:9090/Project/deleteProject', { params : deleteData })
+                                  //成功返回
+                                  .then(response => {
+                                      console.log(response);
+                                      if(response.status === 200) {
+                                          ElMessage.success("删除成功");
+                                          router.go(0);
+                                      }
+                                      else{
+                                          return false;
+                                      }
+                                  })
+                                  //失败返回
+                                  .catch(error => {
+                                      console.log(error);
+                                      return false;
+                                  })
+                          }
+                          else{
+                              return false;
+                          }
+                      })
+                      //失败返回
+                      .catch(error => {
+                          console.log(error);
+                          return false;
+                      })
               })
               .catch(() => {});
       };
