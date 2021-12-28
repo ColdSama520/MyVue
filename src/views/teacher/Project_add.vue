@@ -94,7 +94,7 @@ export default {
                                 console.log(response);
                                 if (response.status === 200) {
                                   ElMessage.success("添加成功!");
-                                  router.go(0);
+                                  formRef.value.resetFields();
                                 }
                                 else {
                                   return false;
