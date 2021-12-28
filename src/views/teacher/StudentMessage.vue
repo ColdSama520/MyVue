@@ -30,11 +30,11 @@
     </div>
       <el-dialog title="编辑" v-model="editVisible" width="30%">
           <el-form label-width="70px">
-              <el-form-item label="用户名">
-                  <el-input v-model="form.name"></el-input>
+              <el-form-item label="学生姓名">
+                  <el-input v-model="form.student_name"></el-input>
               </el-form-item>
-              <el-form-item label="地址">
-                  <el-input v-model="form.address"></el-input>
+              <el-form-item label="联系方式">
+                  <el-input v-model="form.student_phone"></el-input>
               </el-form-item>
           </el-form>
           <template #footer>
@@ -125,23 +125,38 @@ export default {
         // 表格编辑时弹窗和保存
         const editVisible = ref(false);
         let form = reactive({
-            name: "",
-            address: "",
+          student_id: "",
+          student_name: "",
+          student_phone: "",
         });
         let idx = -1;
         const handleEdit = (index, row) => {
             idx = index;
-            Object.keys(form).forEach((item) => {
-                form[item] = row[item];
-            });
+            form.student_id = student.studentData[index].student_id;
             editVisible.value = true;
         };
         const saveEdit = () => {
             editVisible.value = false;
-            ElMessage.success(`修改第 ${idx + 1} 行成功`);
-            Object.keys(form).forEach((item) => {
-                tableData.value[idx][item] = form[item];
-            });
+          axios.get('http://localhost:9090/Student/updateStudentName', {params: form})
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if (response.status === 200) {
+                  if (response.data.length === 0) {
+                    ElMessage.success(`修改第 ${idx + 1} 行成功`);
+                    router.go(0);
+                  }else{
+                    student.studentData = response.data;
+                  }
+                } else {
+                  return false;
+                }
+              })
+              //失败返回
+              .catch(error => {
+                console.log(error);
+                return false;
+              })
         };
 
             const searchTable = reactive({
