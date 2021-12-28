@@ -16,7 +16,7 @@
         <el-button type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
       </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-        <el-table-column prop="project_name" label="案例名称"></el-table-column>
+        <el-table-column prop="project_name" label="案例名称" @click="handleRead"></el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
             <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑
@@ -52,12 +52,15 @@ import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
 import axios from "axios";
+import {useRouter} from "vue-router";
 
 export default {
       name: "casemessage",
       methods:{ //跳转页面
       },
       setup() {
+          const router = useRouter();
+
         const query = reactive({
           name: "",
         });
@@ -136,6 +139,10 @@ export default {
           }
         };
 
+          const handleRead = () => {
+              router.push({ path:'/case_add'  })
+          }
+
     return {
         query,
         tableData,
@@ -146,6 +153,7 @@ export default {
         handleEdit,
         saveEdit,
         handleSearch,
+        handleRead,
     };
   },
 };
