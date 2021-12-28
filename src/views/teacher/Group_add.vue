@@ -13,6 +13,9 @@
         <div class="container">
             <div class="form-box">
                 <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
+                    <el-form-item label="小组ID" prop="id">
+                      <el-input v-model="form.name"></el-input>
+                    </el-form-item>
                     <el-form-item label="组名" prop="name">
                         <el-input v-model="form.name"></el-input>
                     </el-form-item>
