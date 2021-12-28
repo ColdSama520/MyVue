@@ -11,6 +11,10 @@
       </el-breadcrumb>
     </div>
     <div class="container">
+      <div class="handle-box">
+        <el-input v-model="searchTable.student_id" placeholder="案例名称" class="handle-input mr10"></el-input>
+        <el-button type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
+      </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="project_name" label="案例名称"></el-table-column>
         <el-table-column label="操作" width="180" align="center">
@@ -47,6 +51,7 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
+import axios from "axios";
 
 export default {
       name: "casemessage",
@@ -100,14 +105,47 @@ export default {
           });
       };
 
+        const searchTable = reactive({
+          course_id: localStorage.getItem("c_message_id"),
+          student_id: '',
+        })
+
+        const handleSearch = () => {
+          if(searchTable.student_id === '')
+            getData();
+          else {
+            axios.get('http://localhost:9090/Group/GroupCourseProjectById', {params: searchTable})
+                //成功返回
+                .then(response => {
+                  console.log(response);
+                  if (response.status === 200) {
+                    if (response.data.length === 0) {
+                      ElMessage.error("请输入该班课的组长ID");
+                    }else{
+                      group.groupData = response.data;
+                    }
+                  } else {
+                    return false;
+                  }
+                })
+                //失败返回
+                .catch(error => {
+                  console.log(error);
+                  return false;
+                })
+          }
+        };
+
     return {
         query,
         tableData,
         form,
         editVisible,
+        searchTable,
         handleDelete,
         handleEdit,
         saveEdit,
+        handleSearch,
     };
   },
 };
