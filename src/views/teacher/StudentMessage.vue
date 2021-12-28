@@ -142,12 +142,8 @@ export default {
               .then(response => {
                 console.log(response);
                 if (response.status === 200) {
-                  if (response.data.length === 0) {
                     ElMessage.success(`修改第 ${idx + 1} 行成功`);
                     router.go(0);
-                  }else{
-                    student.studentData = response.data;
-                  }
                 } else {
                   return false;
                 }
