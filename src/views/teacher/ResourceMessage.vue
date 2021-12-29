@@ -8,26 +8,17 @@
         <el-breadcrumb-item>案例管理</el-breadcrumb-item>
         <el-breadcrumb-item>案例浏览</el-breadcrumb-item>
         <el-breadcrumb-item>案例详情</el-breadcrumb-item>
+        <el-breadcrumb-item>资源查看</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container">
-      <div class="handle-box">
-        <el-input v-model="searchTable.case_name" placeholder="案例名称" class="handle-input mr10"></el-input>
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
-      </div>
-      <el-table :data="Case.caseData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-        <el-table-column prop="case_name" label="案例名称" ></el-table-column>
-        <el-table-column prop="case_content" label="案例介绍" ></el-table-column>
-        <el-table-column prop="case_type" label="案例类型" ></el-table-column>
-        <el-table-column label="案例资源" width="180" align="center">
+      <el-table :data="Resource.ResourceData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+        <el-table-column prop="resource_name" label="资源名称" ></el-table-column>
+        <el-table-column prop="resource_type" label="资源类型" ></el-table-column>
+        <el-table-column prop="resource_date" label="上传日期" ></el-table-column>
+        <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
-            <el-button type="text" icon="el-icon-more" @click="handleRead(scope.$index, scope.row)">查看</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="270" align="center">
-          <template #default="scope">
-            <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="text" icon="el-icon-upload2" @click="handleEdit(scope.$index, scope.row)">上传</el-button>
+            <el-button type="text" icon="el-icon-download" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
             <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -62,26 +53,26 @@ import axios from "axios";
 import {useRouter} from "vue-router";
 
 export default {
-      name: "casemessage",
+      name: "resourcemessage",
       methods:{ //跳转页面
       },
       setup() {
         const router = useRouter();
 
-        const Case = reactive({
-          caseData: []
+        const Resource = reactive({
+          ResourceData: []
         });
         const tableData = reactive({
-          course_id: localStorage.getItem("c_message_id"),
+          case_id: localStorage.getItem("case_id"),
         })
         // 获取表格数据
         const getData = () => {
-          axios.get('http://localhost:9090/Case/CaseCourseAll', { params : tableData })
+          axios.get('http://localhost:9090/Resource/ResourceCaseAll', { params : tableData })
               //成功返回
               .then(response => {
                 console.log(response);
                 if(response.status === 200) {
-                  Case.caseData = response.data;
+                  Resource.ResourceData = response.data;
                 }
                 else{
                   return false;
@@ -96,18 +87,18 @@ export default {
         getData();
 
         const deleteData = reactive({
-          case_id: "",
+          resource_id: "",
         })
 
       // 删除操作
       const handleDelete = (index) => {
-          deleteData.case_id = Case.caseData[index].case_id;
+          deleteData.resource_id = Resource.ResourceData[index].resource_id;
           // 二次确认删除
           ElMessageBox.confirm("确定要删除吗？", "提示", {
               type: "warning",
           })
               .then(() => {
-                axios.get('http://localhost:9090/Case/deleteCaseById', { params : deleteData })
+                axios.get('http://localhost:9090/Resource/deleteResourceById', { params : deleteData })
                     //成功返回
                     .then(response => {
                       console.log(response);
@@ -150,54 +141,17 @@ export default {
           });
       };
 
-        const searchTable = reactive({
-          course_id: localStorage.getItem("c_message_id"),
-          case_name: '',
-        })
 
-        const handleSearch = () => {
-          if(searchTable.case_name === '')
-            getData();
-          else {
-            axios.get('http://localhost:9090/Case/CaseCourseByName', {params: searchTable})
-                //成功返回
-                .then(response => {
-                  console.log(response);
-                  if (response.status === 200) {
-                    if (response.data.length === 0) {
-                      ElMessage.error("请输入该班课的案例名称");
-                    }else{
-                      Case.caseData = response.data;
-                    }
-                  } else {
-                    return false;
-                  }
-                })
-                //失败返回
-                .catch(error => {
-                  console.log(error);
-                  return false;
-                })
-          }
-        };
-
-          const handleRead = (index) => {
-            localStorage.setItem("case_id", Case.caseData[index].case_id);
-            router.push("/resourcemessage");
-          }
 
     return {
-        Case,
+        Resource,
         tableData,
         form,
         editVisible,
-        searchTable,
         deleteData,
         handleDelete,
         handleEdit,
         saveEdit,
-        handleSearch,
-        handleRead,
     };
   },
 };

@@ -170,6 +170,14 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "casemessage" */ "../views/teacher/CaseMessage.vue")
             },{
+                path: "/resourcemessage",
+                name: "resourcemessage",
+                meta: {
+                    // permission: [],
+                    title: '资源查看'
+                },
+                component: () => import ( /* webpackChunkName: "resourcemessage" */ "../views/teacher/ResourceMessage.vue")
+            },{
                 path: "/case_add",
                 name: "case_add",
                 meta: {
