@@ -27,6 +27,21 @@
                     <p class="login-tips">Tips : 密码默认为123456。</p>
                 </el-form>
             </div>
+            <el-upload
+                    action=""
+                    :auto-upload="false"
+                    accept=".xlsx, .xls"
+                    :show-file-list="false"
+                    :on-change="handle">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">
+                    将文件拖到此处，或
+                    <em>点击上传</em>
+                </div>
+                <template #tip>
+                    <div class="el-upload__tip">只能上传 xlsx/xls 文件</div>
+                </template>
+            </el-upload>
         </div>
     </div>
 </template>
