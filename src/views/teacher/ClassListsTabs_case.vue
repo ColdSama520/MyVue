@@ -41,7 +41,11 @@ export default {
   },
   setup() {
     const router = useRouter();
-    axios.get('http://localhost:9090/Course/all')
+    const tableData = reactive({
+      teacher_id: localStorage.getItem("ms_username"),
+    })
+
+    axios.get('http://localhost:9090/Course/CourseTeacherCommon', { params : tableData })
         //成功返回
         .then(response => {
           console.log(response);
@@ -78,6 +82,7 @@ export default {
     return {
       message,
       state,
+      tableData,
       handleMessage,
       handleRead,
     };
