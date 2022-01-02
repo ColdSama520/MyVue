@@ -10,7 +10,7 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+            <el-table :data="project.projectData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
                 <el-table-column prop="project_id" label="项目ID"></el-table-column>
                 <el-table-column prop="project_name" label="项目名"></el-table-column>
                 <el-table-column prop="project_introduction" label="项目内容介绍"></el-table-column>
@@ -27,26 +27,45 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
+import {useRouter} from "vue-router";
+import axios from "axios";
 
 export default {
       name: "projectmessage_student",
       methods:{ //跳转页面
       },
       setup() {
-        const query = reactive({
-          name: "",
+        const router = useRouter();
+
+        const project = reactive({
+          projectData: []
         });
-        const tableData = ref([]);
+        const tableData = reactive({
+          course_id: localStorage.getItem("c_message_id"),
+        })
         // 获取表格数据
         const getData = () => {
-          fetchData(query).then((res) => {
-            tableData.value = res.list;
-          });
+          axios.get('http://localhost:9090/Project/ProjectGroup', { params : tableData })
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if(response.status === 200) {
+                  project.projectData = response.data;
+                }
+                else{
+                  return false;
+                }
+              })
+              //失败返回
+              .catch(error => {
+                console.log(error);
+                return false;
+              })
         };
         getData();
 
     return {
-        query,
+        project,
         tableData,
     };
   },

@@ -10,17 +10,17 @@
       </el-breadcrumb>
     </div>
     <div class="container">
-      <el-table>
+      <el-table :data="student.studentData" border class="student" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="student_id" label="学生ID"></el-table-column>
         <el-table-column prop="student_name" label="学生姓名"></el-table-column>
         <el-table-column prop="student_phone" label="联系方式"></el-table-column>
       </el-table>
-      <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+      <el-table :data="course.courseData" border class="course" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="course_id" label="课程ID"></el-table-column>
         <el-table-column prop="course_name" label="课程名"></el-table-column>
         <el-table-column prop="course_start_year" label="开课日期"></el-table-column>
         <el-table-column prop="student_class" label="上课班级"></el-table-column>
-        <el-table-column prop="date" label="上课人数"></el-table-column>
+        <el-table-column prop="student_number" label="上课人数"></el-table-column>
       </el-table>
     </div>
 
@@ -32,26 +32,69 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
+import axios from "axios";
 
 export default {
       name: "classmessage_student",
       methods:{ //跳转页面
       },
       setup() {
-        const query = reactive({
-          name: "",
+        const student = reactive({
+          studentData: [],
         });
-        const tableData = ref([]);
+        const course = reactive({
+          courseData: [],
+        });
+
+        const tableData = reactive({
+          student_id: localStorage.getItem("ms_username"),
+        })
+
+        const cData = reactive({
+          course_id: localStorage.getItem("c_message_id"),
+        })
+
         // 获取表格数据
         const getData = () => {
-          fetchData(query).then((res) => {
-            tableData.value = res.list;
-          });
+          axios.get('http://localhost:9090/Student/StudentMessageById', { params : tableData })
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if(response.status === 200) {
+                  student.studentData = response.data;
+                }
+                else{
+                  return false;
+                }
+              })
+              //失败返回
+              .catch(error => {
+                console.log(error);
+                return false;
+              })
+          axios.get('http://localhost:9090/Course/CourseStudent', { params : cData })
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if(response.status === 200) {
+                  course.courseData = response.data;
+                }
+                else{
+                  return false;
+                }
+              })
+              //失败返回
+              .catch(error => {
+                console.log(error);
+                return false;
+              })
         };
         getData();
 
     return {
-        query,
+        student,
+        cData,
+        course,
         tableData,
     };
   },
@@ -71,7 +114,11 @@ export default {
   width: 300px;
   display: inline-block;
 }
-.table {
+.student {
+  width: 100%;
+  font-size: 14px;
+}
+.course {
   width: 100%;
   font-size: 14px;
 }

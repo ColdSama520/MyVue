@@ -68,7 +68,7 @@ export default {
         });
 
         const handleMessage = (index) => {
-            localStorage.setItem("c_message_id", state.course[index].course_id);
+          localStorage.setItem("c_message_id", state.course[index].course_id);
             router.push({ path:'/classmessage_student'  })
         }
 
