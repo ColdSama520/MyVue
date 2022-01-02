@@ -210,6 +210,14 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "case_add" */ "../views/student/ProjectMessage_student.vue")
             },{
+                path: "/casemessage_student",
+                name: "casemessage_student",
+                meta: {
+                    // permission: [],
+                    title: '查看案例'
+                },
+                component: () => import ( /* webpackChunkName: "casemessage_student" */ "../views/student/CaseMessage_student.vue")
+            },{
                 path: "/caseliststabs",
                 name: "caseliststabs",
                 meta: {
