@@ -136,7 +136,7 @@ export default {
                   subs: [
                     {
                       title: "小组管理",
-                      index: "/table",
+                      index: "/groupmessage_student",
                     },
                     {
                       title: "项目任务管理",

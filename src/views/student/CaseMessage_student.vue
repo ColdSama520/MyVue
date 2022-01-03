@@ -3,11 +3,10 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-lx-peoplefill"></i> 教师
+          <i class="el-icon-lx-peoplefill"></i> 学生
         </el-breadcrumb-item>
         <el-breadcrumb-item>案例管理</el-breadcrumb-item>
         <el-breadcrumb-item>案例浏览</el-breadcrumb-item>
-        <el-breadcrumb-item>案例详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container">
@@ -26,7 +25,7 @@
         </el-table-column>
         <el-table-column label="操作" width="270" align="center">
           <template #default="scope">
-            <el-button type="text" icon="el-icon-upload2" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
+            <el-button type="text" icon="el-icon-download" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
           </template>
         </el-table-column>
       </el-table>
