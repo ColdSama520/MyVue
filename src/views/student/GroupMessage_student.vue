@@ -120,24 +120,41 @@ export default {
 
         const editVisible = ref(false);
         let form = reactive({
-          group_id : ""
+          group_id : "",
+          student_id : "",
         });
         let idx = -1;
         const handleEdit = (index, row) => {
           idx = index;
           form.group_id = group.groupData[index].group_id;
+          form.student_id = localStorage.getItem("ms_username");
           editVisible.value = true;
         };
         const saveEdit = () => {
           editVisible.value = false;
-          axios.get('http://localhost:9090/', {params: form})
+          axios.get('http://localhost:9090/SG/HasGroupByStudentId', {params: form})
               //成功返回
               .then(response => {
                 console.log(response);
-                if (response.status === 200) {
-                  ElMessage.success(`修改第 ${idx + 1} 行成功`);
-                  router.go(0);
+                if (response.data === "") {
+                  axios.get('http://localhost:9090/SG/HasGroupNumber', {params: form})
+                      //成功返回
+                      .then(response => {
+                        console.log(response);
+                        if (response.data === 1) {
+
+                        } else {
+                          ElMessage.error("人数已满，不可以加入！");
+                          return false;
+                        }
+                      })
+                      //失败返回
+                      .catch(error => {
+                        console.log(error);
+                        return false;
+                      })
                 } else {
+                  ElMessage.error("不可以重复加入小组！！！");
                   return false;
                 }
               })
