@@ -3,7 +3,7 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-lx-peoplefill"></i> 教师
+          <i class="el-icon-lx-peoplefill"></i> 学生
         </el-breadcrumb-item>
         <el-breadcrumb-item>项目任务管理</el-breadcrumb-item>
         <el-breadcrumb-item>小组管理</el-breadcrumb-item>
