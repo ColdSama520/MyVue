@@ -19,9 +19,26 @@
         <el-table-column prop="group_name" label="小组名"></el-table-column>
         <el-table-column prop="student_id" label="组长ID"></el-table-column>
         <el-table-column prop="project_id" label="项目ID"></el-table-column>
+        <el-table-column label="操作" width="270" align="center">
+          <template #default="scope">
+            <el-button type="text" icon="el-icon-link" @click="handleEdit(scope.$index, scope.row)">加入</el-button>
+            <el-button type="text" icon="el-icon-close" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
         <br>
     </div>
+    <el-dialog title="信息" v-model="editVisible" width="30%">
+      <el-form label-width="70px">
+        是否加入该小组
+      </el-form>
+      <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="editVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="saveEdit">确 定</el-button>
+                </span>
+      </template>
+    </el-dialog>
 
 
   </div>
@@ -101,10 +118,45 @@ export default {
           }
         };
 
+        const editVisible = ref(false);
+        let form = reactive({
+          group_id : ""
+        });
+        let idx = -1;
+        const handleEdit = (index, row) => {
+          idx = index;
+          form.group_id = group.groupData[index].group_id;
+          editVisible.value = true;
+        };
+        const saveEdit = () => {
+          editVisible.value = false;
+          axios.get('http://localhost:9090/', {params: form})
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if (response.status === 200) {
+                  ElMessage.success(`修改第 ${idx + 1} 行成功`);
+                  router.go(0);
+                } else {
+                  return false;
+                }
+              })
+              //失败返回
+              .catch(error => {
+                console.log(error);
+                return false;
+              })
+        };
+
     return {
         group,
         searchTable,
+        editVisible,
+        form,
         handleSearch,
+        handleEdit,
+        saveEdit,
+
     };
   },
 };
