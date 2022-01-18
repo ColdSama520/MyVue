@@ -19,10 +19,11 @@
         <el-table-column prop="group_name" label="小组名"></el-table-column>
         <el-table-column prop="student_id" label="组长ID"></el-table-column>
         <el-table-column prop="project_id" label="项目ID"></el-table-column>
-        <el-table-column label="操作" width="270" align="center">
+        <el-table-column label="操作" width="370" align="center">
           <template #default="scope">
             <el-button type="text" icon="el-icon-link" @click="handleEdit(scope.$index, scope.row)">加入</el-button>
-            <el-button type="text" icon="el-icon-close" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button type="text" icon="el-icon-close" @click="handleDelete(scope.$index, scope.row)">删除小组成员</el-button>
+            <el-button type="text" icon="el-icon-edit" @click="handleChoose(scope.$index, scope.row)">选择项目</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -36,6 +37,19 @@
                 <span class="dialog-footer">
                     <el-button @click="editVisible = false">取 消</el-button>
                     <el-button type="primary" @click="saveEdit">确 定</el-button>
+                </span>
+      </template>
+    </el-dialog>
+    <el-dialog title="选择项目" v-model="editVisible1" width="30%">
+      <el-form label-width="70px">
+        <el-form-item label="项目ID">
+          <el-input v-model="form1.project_id"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="editVisible1 = false">取 消</el-button>
+                    <el-button type="primary" @click="saveEdit1">确 定</el-button>
                 </span>
       </template>
     </el-dialog>
@@ -142,7 +156,21 @@ export default {
                       .then(response => {
                         console.log(response);
                         if (response.data === 1) {
-
+                          axios.get('http://localhost:9090/SG/GroupAddNewStudent', {params: form})
+                              //成功返回
+                              .then(response => {
+                                console.log(response);
+                                if (response.status === 200) {
+                                  ElMessage.success("加入成功！");
+                                } else {
+                                  return false;
+                                }
+                              })
+                              //失败返回
+                              .catch(error => {
+                                console.log(error);
+                                return false;
+                              })
                         } else {
                           ElMessage.error("人数已满，不可以加入！");
                           return false;
@@ -165,15 +193,80 @@ export default {
               })
         };
 
+        const handleDelete = (index) => {
+          deleteData.case_id = Case.caseData[index].case_id;
+          // 二次确认删除
+          ElMessageBox.confirm("确定要删除吗？", "提示", {
+            type: "warning",
+          })
+              .then(() => {
+                axios.get('http://localhost:9090/Case/deleteCaseById', { params : deleteData })
+                    //成功返回
+                    .then(response => {
+                      console.log(response);
+                      if(response.status === 200) {
+                        ElMessage.success("删除成功");
+                        router.go(0);
+                      }
+                      else{
+                        return false;
+                      }
+                    })
+                    //失败返回
+                    .catch(error => {
+                      console.log(error);
+                      return false;
+                    })
+              })
+              .catch(() => {});
+        };
+
+        // 表格编辑时弹窗和保存
+        const editVisible1 = ref(false);
+        let form1 = reactive({
+          project_id: "",
+          student_id: "",
+        });
+        let idx1 = -1;
+        const handleChoose = (index, row) => {
+          idx1 = index;
+          form1.student_id = group.groupData[index].student_id;
+          editVisible1.value = true;
+        };
+        const saveEdit1 = () => {
+          editVisible1.value = false;
+          axios.get('http://localhost:9090/Group/updateGroupProject', {params: form1})
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if (response.status === 200) {
+                  ElMessage.success(`修改项目成功!!!`);
+                  router.go(0);
+                } else {
+                  return false;
+                }
+              })
+              //失败返回
+              .catch(error => {
+                console.log(error);
+                return false;
+              })
+        };
+
+
     return {
         group,
         searchTable,
         editVisible,
         form,
+      editVisible1,
+      form1,
         handleSearch,
         handleEdit,
         saveEdit,
-
+      saveEdit1,
+      handleChoose,
+      handleDelete,
     };
   },
 };
