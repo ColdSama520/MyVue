@@ -234,6 +234,14 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "groupmessage_student" */ "../views/student/GroupMessage_student.vue")
             },{
+                path: "/taskmessage_student",
+                name: "taskmessage_student",
+                meta: {
+                    // permission: [],
+                    title: '项目任务'
+                },
+                component: () => import ( /* webpackChunkName: "taskmessage_student" */ "../views/student/TaskMessage_student.vue")
+            },{
                 path: "/table",
                 name: "basetable",
                 meta: {
