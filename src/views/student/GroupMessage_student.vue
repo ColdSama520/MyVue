@@ -40,6 +40,7 @@
                 </span>
       </template>
     </el-dialog>
+
     <el-dialog title="选择项目" v-model="editVisible1" width="30%">
       <el-form label-width="70px">
         <el-form-item label="项目ID">
@@ -53,6 +54,21 @@
                 </span>
       </template>
     </el-dialog>
+
+    <el-dialog title="删除小组成员" v-model="editVisible2" width="30%">
+      <el-form label-width="70px">
+        <el-form-item label="学生ID">
+          <el-input v-model="form2.student_id"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="editVisible2 = false">取 消</el-button>
+                    <el-button type="primary" @click="saveEdit2">确 定</el-button>
+                </span>
+      </template>
+    </el-dialog>
+
 
 
   </div>
@@ -193,32 +209,51 @@ export default {
               })
         };
 
-        const handleDelete = (index) => {
-          deleteData.case_id = Case.caseData[index].case_id;
-          // 二次确认删除
-          ElMessageBox.confirm("确定要删除吗？", "提示", {
-            type: "warning",
-          })
-              .then(() => {
-                axios.get('http://localhost:9090/Case/deleteCaseById', { params : deleteData })
-                    //成功返回
-                    .then(response => {
-                      console.log(response);
-                      if(response.status === 200) {
-                        ElMessage.success("删除成功");
-                        router.go(0);
-                      }
-                      else{
+        // 表格编辑时弹窗和保存
+        const editVisible2 = ref(false);
+        let form2 = reactive({
+          group_id: "",
+          student_id: "",
+        });
+        let idx2 = -1;
+        const handleDelete = (index, row) => {
+          idx2 = index;
+          form2.group_id = group.groupData[index].group_id;
+          editVisible2.value = true;
+        };
+        const saveEdit2 = () => {
+          editVisible2.value = false;
+          axios.get('http://localhost:9090/Group/IsGroupHeader', {params: form2})
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if (response.data === localStorage.getItem("ms_username")) {
+                  axios.get('http://localhost:9090/SG/deleteSGStudentByID', {params: form2})
+                      //成功返回
+                      .then(response => {
+                        console.log(response);
+                        if (response.status === 200) {
+                          ElMessage.success(`成员已删除!!!`);
+                          router.go(0);
+                        } else {
+                          return false;
+                        }
+                      })
+                      //失败返回
+                      .catch(error => {
+                        console.log(error);
                         return false;
-                      }
-                    })
-                    //失败返回
-                    .catch(error => {
-                      console.log(error);
-                      return false;
-                    })
+                      })
+                } else {
+                  ElMessage.error("无权限!!!");
+                  return false;
+                }
               })
-              .catch(() => {});
+              //失败返回
+              .catch(error => {
+                console.log(error);
+                return false;
+              })
         };
 
         // 表格编辑时弹窗和保存
@@ -261,10 +296,13 @@ export default {
         form,
       editVisible1,
       form1,
+      editVisible2,
+      form2,
         handleSearch,
         handleEdit,
         saveEdit,
       saveEdit1,
+      saveEdit2,
       handleChoose,
       handleDelete,
     };
