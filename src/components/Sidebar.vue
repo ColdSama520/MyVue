@@ -139,8 +139,12 @@ export default {
                       index: "/groupmessage_student",
                     },
                     {
-                      title: "项目任务管理",
-                      index: "/table",
+                      title: "个人项目任务",
+                      index: "/taskmessage_student",
+                    },
+                    {
+                      title: "小组项目任务",
+                      index: "/",
                     }
                   ]
                 },

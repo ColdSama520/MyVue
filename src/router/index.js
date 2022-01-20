@@ -238,7 +238,7 @@ const routes = [
                 name: "taskmessage_student",
                 meta: {
                     // permission: [],
-                    title: '项目任务'
+                    title: '个人项目任务'
                 },
                 component: () => import ( /* webpackChunkName: "taskmessage_student" */ "../views/student/TaskMessage_student.vue")
             },{
