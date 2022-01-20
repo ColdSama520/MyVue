@@ -144,7 +144,7 @@ export default {
                     },
                     {
                       title: "小组项目任务",
-                      index: "/",
+                      index: "/taskmessageothers_student",
                     }
                   ]
                 },

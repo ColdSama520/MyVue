@@ -270,14 +270,29 @@ export default {
         };
         const saveEdit1 = () => {
           editVisible1.value = false;
-          axios.get('http://localhost:9090/Group/updateGroupProject', {params: form1})
+          axios.get('http://localhost:9090/Group/IsGroupHeader', {params: form2})
               //成功返回
               .then(response => {
                 console.log(response);
-                if (response.status === 200) {
-                  ElMessage.success(`修改项目成功!!!`);
-                  router.go(0);
+                if (response.data === localStorage.getItem("ms_username")) {
+                  axios.get('http://localhost:9090/Group/updateGroupProject', {params: form1})
+                      //成功返回
+                      .then(response => {
+                        console.log(response);
+                        if (response.status === 200) {
+                          ElMessage.success(`修改项目成功!!!`);
+                          router.go(0);
+                        } else {
+                          return false;
+                        }
+                      })
+                      //失败返回
+                      .catch(error => {
+                        console.log(error);
+                        return false;
+                      })
                 } else {
+                  ElMessage.error("无权限!!!");
                   return false;
                 }
               })
