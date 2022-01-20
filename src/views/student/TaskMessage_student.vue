@@ -43,6 +43,9 @@
         <el-form-item label="任务状态">
           <el-input v-model="form.task_type" placeholder="规划中、实施中、已完成"></el-input>
         </el-form-item>
+<!--        <el-form-item label="修改时间">-->
+<!--          <el-input v-model="form.task_alter_date" ></el-input>-->
+<!--        </el-form-item>-->
       </el-form>
       <template #footer>
                 <span class="dialog-footer">
@@ -80,9 +83,7 @@ import { useStore } from "vuex";
 export default {
       name: "taskmessage_student",
       methods:{ //跳转页面
-        handleRead(){
-          this.$router.push({ path:'/' })
-        }
+
       },
       setup() {
 
@@ -91,6 +92,37 @@ export default {
         const task = reactive({
           taskData: []
         })
+
+        const sj = reactive({
+          timer: null,
+          nowDate: '',
+          nowTime: '',
+        })
+
+        const setNowTimes = () => {
+          const myDate = new Date()
+          console.log(myDate)
+          const yy = String(myDate.getFullYear())
+          const mm = myDate.getMonth() + 1
+          const dd = String(
+              myDate.getDate() < 10 ? '0' + myDate.getDate() : myDate.getDate()
+          )
+          const hou = String(
+              myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()
+          )
+          const min = String(
+              myDate.getMinutes() < 10
+                  ? '0' + myDate.getMinutes()
+                  : myDate.getMinutes()
+          )
+          const sec = String(
+              myDate.getSeconds() < 10
+                  ? '0' + myDate.getSeconds()
+                  : myDate.getSeconds()
+          )
+          sj.nowDate = yy + '-' + mm + '-' + dd + ' '
+          sj.nowTime = hou + ':' + min + ':' + sec
+        }
 
         // 获取表格数据
         const getData = () => {
@@ -151,15 +183,18 @@ export default {
           task_stage_type: '',
           task_details: '',
           task_type: '',
+          task_alter_date: '',
         });
         let idx = -1;
         const handleEdit = (index, row) => {
           idx = index;
+          setNowTimes();
           form.task_id = task.taskData[index].task_id;
           form.task_name = task.taskData[index].task_name;
           form.task_stage_type = task.taskData[index].task_stage_type;
           form.task_details = task.taskData[index].task_details;
           form.task_type = task.taskData[index].task_type;
+          form.task_alter_date = sj.nowDate + sj.nowTime;
           editVisible.value = true;
         };
         const saveEdit = () => {
@@ -214,9 +249,13 @@ export default {
                 return false;
               })
         };
+        const handleRead = () => {
+          router.push("/task_add");
+        }
 
 
     return {
+      sj,
         task,
         searchTable,
         editVisible,
@@ -228,6 +267,8 @@ export default {
         saveEdit,
       saveEdit2,
       handleDelete,
+      setNowTimes,
+      handleRead,
     };
   },
 };

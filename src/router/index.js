@@ -242,6 +242,14 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "taskmessage_student" */ "../views/student/TaskMessage_student.vue")
             },{
+                path: "/task_add",
+                name: "task_add",
+                meta: {
+                    // permission: [],
+                    title: '添加任务'
+                },
+                component: () => import ( /* webpackChunkName: "task_add" */ "../views/student/Task_add.vue")
+            },{
                 path: "/table",
                 name: "basetable",
                 meta: {
