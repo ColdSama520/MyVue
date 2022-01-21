@@ -107,7 +107,7 @@ export default {
                           },
                           {
                             title: "项目任务",
-                            index: "/table",
+                            index: "/taskliststabs_group",
                           }
                         ]
                     },

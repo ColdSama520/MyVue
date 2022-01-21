@@ -186,6 +186,30 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "case_add" */ "../views/teacher/Case_add.vue")
             },{
+                path: "/taskliststabs_group",
+                name: "taskliststabs_group",
+                meta: {
+                    // permission: [],
+                    title: '小组展示-项目任务管理'
+                },
+                component: () => import ( /* webpackChunkName: "taskliststabs_group" */ "../views/teacher/TaskListsTabs_group.vue")
+            },{
+                path: "/taskliststabs_groupmember",
+                name: "taskliststabs_groupmember",
+                meta: {
+                    // permission: [],
+                    title: '小组成员-项目任务管理'
+                },
+                component: () => import ( /* webpackChunkName: "taskliststabs_groupmember" */ "../views/teacher/TaskListsTabs_groupMember.vue")
+            },{
+                path: "/taskmessage_teacher",
+                name: "taskmessage_teacher",
+                meta: {
+                    // permission: [],
+                    title: '成员任务详情'
+                },
+                component: () => import ( /* webpackChunkName: "taskmessage_teacher" */ "../views/teacher/taskMessage_teacher.vue")
+            },{
                 path: "/classliststabs_student",
                 name: "classliststabs_student",
                 meta: {
