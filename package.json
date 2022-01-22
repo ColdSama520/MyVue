@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "element-plus": "1.0.2-beta.52",
+    "file-saver": "^2.0.5",
     "vue": "^3.1.2",
     "vue-axios": "^3.4.0",
     "vue-cropperjs": "^5.0.0",
@@ -17,11 +18,13 @@
     "vue-router": "^4.0.10",
     "vue-schart": "^2.0.0",
     "vuex": "^4.0.2",
-    "wangeditor": "^4.7.4"
+    "wangeditor": "^4.7.4",
+    "xlsx": "^0.17.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.1.2",
+    "script-loader": "^0.7.2",
     "vite": "2.3.7"
   },
   "browserslist": [
