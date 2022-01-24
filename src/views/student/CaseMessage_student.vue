@@ -23,26 +23,8 @@
             <el-button type="text" icon="el-icon-more" @click="handleRead(scope.$index, scope.row)">查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="270" align="center">
-          <template #default="scope">
-            <el-button type="text" icon="el-icon-download" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
-          </template>
-        </el-table-column>
       </el-table>
     </div>
-      <el-dialog title="编辑" v-model="editVisible" width="30%">
-          <el-form label-width="70px">
-              <el-form-item label="案例介绍">
-                  <el-input v-model="form.case_content"></el-input>
-              </el-form-item>
-          </el-form>
-          <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="editVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveEdit">确 定</el-button>
-                </span>
-          </template>
-      </el-dialog>
 
 
   </div>
@@ -89,70 +71,6 @@ export default {
         };
         getData();
 
-        const deleteData = reactive({
-          case_id: "",
-        })
-
-      // 删除操作
-      const handleDelete = (index) => {
-          deleteData.case_id = Case.caseData[index].case_id;
-          // 二次确认删除
-          ElMessageBox.confirm("确定要删除吗？", "提示", {
-              type: "warning",
-          })
-              .then(() => {
-                axios.get('http://localhost:9090/Case/deleteCaseById', { params : deleteData })
-                    //成功返回
-                    .then(response => {
-                      console.log(response);
-                      if(response.status === 200) {
-                        ElMessage.success("删除成功");
-                        router.go(0);
-                      }
-                      else{
-                        return false;
-                      }
-                    })
-                    //失败返回
-                    .catch(error => {
-                      console.log(error);
-                      return false;
-                    })
-              })
-              .catch(() => {});
-      };
-
-      // 表格编辑时弹窗和保存
-      const editVisible = ref(false);
-      let form = reactive({
-          case_content: "",
-          case_id: "",
-      });
-      let idx = -1;
-      const handleEdit = (index, row) => {
-          idx = index;
-          form.case_id = Case.caseData[index].case_id;
-          editVisible.value = true;
-      };
-      const saveEdit = () => {
-          editVisible.value = false;
-        axios.get('http://localhost:9090/Case/updateCaseById', {params: form})
-            //成功返回
-            .then(response => {
-              console.log(response);
-              if (response.status === 200) {
-                ElMessage.success(`修改第 ${idx + 1} 行成功`);
-                router.go(0);
-              } else {
-                return false;
-              }
-            })
-            //失败返回
-            .catch(error => {
-              console.log(error);
-              return false;
-            })
-      };
 
         const searchTable = reactive({
           course_id: localStorage.getItem("c_message_id"),
@@ -187,19 +105,13 @@ export default {
 
           const handleRead = (index) => {
             localStorage.setItem("case_id", Case.caseData[index].case_id);
-            router.push("/resourcemessage");
+            router.push("/resourcemessage_student");
           }
 
     return {
         Case,
         tableData,
-        form,
-        editVisible,
         searchTable,
-        deleteData,
-        handleDelete,
-        handleEdit,
-        saveEdit,
         handleSearch,
         handleRead,
     };

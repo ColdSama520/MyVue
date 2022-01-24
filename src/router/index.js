@@ -282,6 +282,14 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "taskmessageothers_student" */ "../views/student/TaskMessageOthers_student.vue")
             },{
+                path: "/resourcemessage_student",
+                name: "resourcemessage_student",
+                meta: {
+                    // permission: [],
+                    title: '案例资源'
+                },
+                component: () => import ( /* webpackChunkName: "resourcemessage_student" */ "../views/student/ResourceMessage_student.vue")
+            },{
                 path: "/table",
                 name: "basetable",
                 meta: {

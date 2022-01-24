@@ -25,6 +25,15 @@
                     <el-form-item label="案例类型" prop="case_type">
                       <el-input v-model="Case.case_type"></el-input>
                     </el-form-item>
+                  <el-upload
+                      action=""
+                      :auto-upload="false"
+                      :show-file-list="false"
+                      :on-change="handle">
+                    <i class="el-icon-upload"></i>
+                    <el-button size="small" type="primary">选择文件</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传图片,文档,视频文件</div>
+                  </el-upload>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">提交</el-button>
                         <el-button @click="onReset">重置</el-button>
@@ -38,9 +47,10 @@
 
 <script>
 import { reactive, ref } from "vue";
-import { ElMessage } from "element-plus";
+import {ElLoading, ElMessage} from "element-plus";
 import axios from "axios";
 import router from "../../router";
+import * as xlsx from "xlsx";
 export default {
     name: "case_add",
     setup() {
@@ -94,12 +104,42 @@ export default {
             formRef.value.resetFields();
         };
 
+      const handle = async (ev) => {
+        console.log(ev);
+        let file = ev.raw;
+        if (!file) {
+          return;
+        }
+        console.log(file.name);
+
+        let loadingInstance = ElLoading.service({
+          text: "Darling, Wait a minute!",
+          background: "rgba(0,0,0,.5)",
+        });
+
+        await delay(3000);
+
+        loadingInstance.close();
+
+      };
+
+      const delay = (interval = 0) => {
+        return new Promise(resolve => {
+          let timer = setTimeout(_ => {
+            clearTimeout(timer);
+            resolve();
+          }, interval);
+        });
+      };
+
         return {
             rules,
             formRef,
             Case,
             onSubmit,
             onReset,
+          handle,
+          delay,
         };
     },
 };
