@@ -26,13 +26,13 @@
                       <el-input v-model="Case.case_type"></el-input>
                     </el-form-item>
                   <el-upload
-                      action=""
-                      :auto-upload="false"
-                      :show-file-list="false"
+                      class="upload-demo"
+                      drag
+                      action="http://localhost:9090/File/upload"
+                      multiple
                       :on-change="handle">
                     <i class="el-icon-upload"></i>
-                    <el-button size="small" type="primary">选择文件</el-button>
-                    <div slot="tip" class="el-upload__tip">只能上传图片,文档,视频文件</div>
+                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   </el-upload>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -68,6 +68,38 @@ export default {
               { required: true, message: "请输入案例类型", trigger: "blur" },
             ],
         };
+
+      const sj = reactive({
+        timer: null,
+        nowDate: '',
+        nowTime: '',
+      })
+
+      const setNowTimes = () => {
+        const myDate = new Date()
+        console.log(myDate)
+        const yy = String(myDate.getFullYear())
+        const mm = myDate.getMonth() + 1
+        const dd = String(
+            myDate.getDate() < 10 ? '0' + myDate.getDate() : myDate.getDate()
+        )
+        const hou = String(
+            myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()
+        )
+        const min = String(
+            myDate.getMinutes() < 10
+                ? '0' + myDate.getMinutes()
+                : myDate.getMinutes()
+        )
+        const sec = String(
+            myDate.getSeconds() < 10
+                ? '0' + myDate.getSeconds()
+                : myDate.getSeconds()
+        )
+        sj.nowDate = yy + '-' + mm + '-' + dd + ' '
+        sj.nowTime = hou + ':' + min + ':' + sec
+      }
+
         const formRef = ref(null);
         const Case = reactive({
           case_id: "",
@@ -77,12 +109,34 @@ export default {
           case_type: "",
           case_is_delete: "否",
         });
+
+      const Resource = reactive({
+        resource_id: "",
+        case_id: "",
+        resource_name: "",
+        resource_type: "",
+        resource_local: "",
+        resource_date: "",
+      });
+
         // 提交
         const onSubmit = () => {
             // 表单校验
             formRef.value.validate((valid) => {
                 if (valid) {
+                  Resource.resource_id = "r" + Math.round(Math.random()*10) + localStorage.getItem("ms_username") + Math.round(Math.random()*10) + Case.case_id;
+                  Resource.case_id = Case.case_id;
                   axios.get('http://localhost:9090/Case/addCaseAll', { params: Case })
+                      //成功返回
+                      .then(response => {
+                        console.log(response);
+                        if (response.status === 200) {
+                        }
+                        else {
+                          return false;
+                        }
+                      })
+                  axios.get('http://localhost:9090/Resource/addResource', { params: Resource })
                       //成功返回
                       .then(response => {
                         console.log(response);
@@ -107,39 +161,27 @@ export default {
       const handle = async (ev) => {
         console.log(ev);
         let file = ev.raw;
-        if (!file) {
-          return;
-        }
+        Resource.resource_name = file.name;
+        Resource.resource_local = "C:/Users/13606/Desktop/UpLoad-cs/" + file.name;
         console.log(file.name);
-
-        let loadingInstance = ElLoading.service({
-          text: "Darling, Wait a minute!",
-          background: "rgba(0,0,0,.5)",
-        });
-
-        await delay(3000);
-
-        loadingInstance.close();
-
-      };
-
-      const delay = (interval = 0) => {
-        return new Promise(resolve => {
-          let timer = setTimeout(_ => {
-            clearTimeout(timer);
-            resolve();
-          }, interval);
-        });
+        if (file.type === "image/jpeg")
+          Resource.resource_type = "图片";
+        console.log(file.type);
+        console.log(Resource.resource_type);
+        setNowTimes();
+        Resource.resource_date = sj.nowDate + sj.nowTime;
       };
 
         return {
+          sj,
             rules,
             formRef,
             Case,
+          Resource,
             onSubmit,
             onReset,
           handle,
-          delay,
+          setNowTimes,
         };
     },
 };

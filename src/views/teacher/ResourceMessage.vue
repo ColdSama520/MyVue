@@ -18,28 +18,11 @@
         <el-table-column prop="resource_date" label="上传日期" ></el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
-            <el-button type="text" icon="el-icon-download" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
             <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-      <el-dialog title="编辑" v-model="editVisible" width="30%">
-          <el-form label-width="70px">
-              <el-form-item label="用户名">
-                  <el-input v-model="form.name"></el-input>
-              </el-form-item>
-              <el-form-item label="地址">
-                  <el-input v-model="form.address"></el-input>
-              </el-form-item>
-          </el-form>
-          <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="editVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveEdit">确 定</el-button>
-                </span>
-          </template>
-      </el-dialog>
 
 
   </div>
@@ -119,39 +102,13 @@ export default {
               .catch(() => {});
       };
 
-      // 表格编辑时弹窗和保存
-      const editVisible = ref(false);
-      let form = reactive({
-          name: "",
-          address: "",
-      });
-      let idx = -1;
-      const handleEdit = (index, row) => {
-          idx = index;
-          Object.keys(form).forEach((item) => {
-              form[item] = row[item];
-          });
-          editVisible.value = true;
-      };
-      const saveEdit = () => {
-          editVisible.value = false;
-          ElMessage.success(`修改第 ${idx + 1} 行成功`);
-          Object.keys(form).forEach((item) => {
-              tableData.value[idx][item] = form[item];
-          });
-      };
-
 
 
     return {
         Resource,
         tableData,
-        form,
-        editVisible,
         deleteData,
         handleDelete,
-        handleEdit,
-        saveEdit,
     };
   },
 };

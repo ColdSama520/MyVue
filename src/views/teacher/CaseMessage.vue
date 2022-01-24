@@ -27,7 +27,7 @@
         <el-table-column label="操作" width="270" align="center">
           <template #default="scope">
             <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="text" icon="el-icon-upload2" @click="handleEdit(scope.$index, scope.row)">上传</el-button>
+            <el-button type="text" icon="el-icon-upload2" @click="handle(scope.$index, scope.row)">上传</el-button>
             <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -47,6 +47,24 @@
           </template>
       </el-dialog>
 
+    <el-dialog title="编辑" v-model="editVisible1" width="30%">
+      <el-upload
+          class="upload-demo"
+          drag
+          action="http://localhost:9090/File/upload"
+          multiple
+          :on-change="update">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      </el-upload>
+      <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="editVisible1 = false">取 消</el-button>
+                    <el-button type="primary" @click="saveEdit1">确 定</el-button>
+                </span>
+      </template>
+    </el-dialog>
+
 
   </div>
 </template>
@@ -57,6 +75,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../../api";
 import axios from "axios";
 import {useRouter} from "vue-router";
+import router from "../../router";
 
 export default {
       name: "casemessage",
@@ -191,20 +210,105 @@ export default {
           const handleRead = (index) => {
             localStorage.setItem("case_id", Case.caseData[index].case_id);
             router.push("/resourcemessage");
-          }
+          };
+
+        const sj = reactive({
+          timer: null,
+          nowDate: '',
+          nowTime: '',
+        });
+
+        const setNowTimes = () => {
+          const myDate = new Date()
+          console.log(myDate)
+          const yy = String(myDate.getFullYear())
+          const mm = myDate.getMonth() + 1
+          const dd = String(
+              myDate.getDate() < 10 ? '0' + myDate.getDate() : myDate.getDate()
+          )
+          const hou = String(
+              myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()
+          )
+          const min = String(
+              myDate.getMinutes() < 10
+                  ? '0' + myDate.getMinutes()
+                  : myDate.getMinutes()
+          )
+          const sec = String(
+              myDate.getSeconds() < 10
+                  ? '0' + myDate.getSeconds()
+                  : myDate.getSeconds()
+          )
+          sj.nowDate = yy + '-' + mm + '-' + dd + ' '
+          sj.nowTime = hou + ':' + min + ':' + sec
+        };
+
+        const Resource = reactive({
+          resource_id: "",
+          case_id: "",
+          resource_name: "",
+          resource_type: "",
+          resource_local: "",
+          resource_date: "",
+        });
+
+        const update = async (ev) => {
+          console.log(ev);
+          let file = ev.raw;
+          Resource.resource_name = file.name;
+          Resource.resource_local = "C:/Users/13606/Desktop/UpLoad-cs/" + file.name;
+          console.log(file.name);
+          if (file.type === "image/jpeg")
+            Resource.resource_type = "图片";
+          console.log(file.type);
+          console.log(Resource.resource_type);
+        }
+
+        const handle = (index, row) => {
+          editVisible1.value = true;
+          setNowTimes();
+          Resource.resource_date = sj.nowDate + sj.nowTime;
+          Resource.resource_id = "r" + Math.round(Math.random()*10) + localStorage.getItem("ms_username") + Math.round(Math.random()*10) + Case.caseData[index].case_id;
+          Resource.case_id = Case.caseData[index].case_id;
+        };
+
+        const editVisible1 = ref(false);
+
+        const saveEdit1 = () => {
+          editVisible1.value = false;
+          axios.get('http://localhost:9090/Resource/addResource', { params: Resource })
+              //成功返回
+              .then(response => {
+                console.log(response);
+                if (response.status === 200) {
+                  ElMessage.success("添加成功!");
+                  router.go(0);
+                }
+                else {
+                  return false;
+                }
+              })
+        };
 
     return {
+        sj,
+        Resource,
         Case,
         tableData,
         form,
         editVisible,
+        editVisible1,
         searchTable,
         deleteData,
         handleDelete,
         handleEdit,
         saveEdit,
+        saveEdit1,
         handleSearch,
         handleRead,
+        handle,
+        setNowTimes,
+        update,
     };
   },
 };
