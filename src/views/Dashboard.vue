@@ -6,7 +6,7 @@
                     <div class="user-info">
                         <img src="../assets/img/img.jpg" class="user-avator" alt />
                         <div class="user-info-cont">
-                            <div class="user-info-name">{{ name }}</div>
+                            <div class="user-info-name" @click="ChangeMessage">{{ name }}</div>
                             <div>{{ role }}</div>
                         </div>
                     </div>
@@ -97,12 +97,14 @@
 <script>
 import Schart from "vue-schart";
 import { reactive } from "vue";
+import {useRouter} from "vue-router";
 export default {
     name: "dashboard",
     components: { Schart },
     setup() {
         const name = localStorage.getItem("ms_username");
-        const role = localStorage.getItem("ms_role");``
+        const role = localStorage.getItem("ms_role");
+        const router = useRouter();
 
         const todoList = reactive([
             {
@@ -131,10 +133,18 @@ export default {
             },
         ]);
 
+        const ChangeMessage = () => {
+          if (role === "学生")
+            router.push("/user_student_change");
+          if (role === "教师")
+            router.push("/user_teacher_change");
+        }
+
         return {
             name,
             todoList,
             role,
+            ChangeMessage,
         };
     },
 };

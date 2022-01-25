@@ -289,6 +289,30 @@ const routes = [
                     title: '案例资源'
                 },
                 component: () => import ( /* webpackChunkName: "resourcemessage_student" */ "../views/student/ResourceMessage_student.vue")
+            },{
+                path: "/user",
+                name: "user",
+                meta: {
+                    // permission: [],
+                    title: '个人中心'
+                },
+                component: () => import ( /* webpackChunkName: "user" */ "../views/User.vue")
+            },{
+                path: "/user_student_change",
+                name: "user_student_change",
+                meta: {
+                    // permission: [],
+                    title: '修改个人信息'
+                },
+                component: () => import ( /* webpackChunkName: "user_student_change" */ "../views/user_student_change.vue")
+            },{
+                path: "/user_teacher_change",
+                name: "user_teacher_change",
+                meta: {
+                    // permission: [],
+                    title: '修改个人信息'
+                },
+                component: () => import ( /* webpackChunkName: "user_teacher_change" */ "../views/user_teacher_change.vue")
             }
         ]
     }, {
