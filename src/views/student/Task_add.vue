@@ -25,6 +25,15 @@
                     <el-form-item label="任务状态" prop="task_type">
                     <el-input v-model="task.task_type" placeholder="规划中、实施中、已完成"></el-input>
                     </el-form-item>
+                  <el-upload
+                      class="upload-demo"
+                      drag
+                      action="http://localhost:9090/File/upload"
+                      multiple
+                      :on-change="handle">
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                  </el-upload>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">提交</el-button>
                         <el-button @click="onReset">重置</el-button>
@@ -103,6 +112,13 @@ export default {
           task_start_date: '',
           student_id: localStorage.getItem("ms_username"),
         });
+
+      const Attachment = reactive({
+        attachment_id: "",
+        task_id: "",
+        attachment_local: "",
+        attachment_date: "",
+      });
         // 提交
         const onSubmit = () => {
 
@@ -112,6 +128,8 @@ export default {
                   setNowTimes();
                   task.task_start_date = sj.nowDate + sj.nowTime;
                   task.task_id = "t" + Math.round(Math.random()*10) + localStorage.getItem("ms_username") + Math.round(Math.random()*10);
+                  Attachment.attachment_id = "a" + "t" + Math.round(Math.random()*10) + localStorage.getItem("ms_username") + task.task_id;
+                  Attachment.task_id = task.task_id;
                   axios.get('http://localhost:9090/Task/addTask', { params: task })
                       //成功返回
                       .then(response => {
@@ -121,6 +139,18 @@ export default {
                           router.go(0);
                           // formRef.value.resetFields();
                           // router.push("/taskmessage_student");
+                        }
+                        else {
+                          ElMessage.error("添加失败！！");
+                          return false;
+                        }
+                      })
+                  axios.get('http://localhost:9090/Attachment/addAttachment', { params: Attachment })
+                      //成功返回
+                      .then(response => {
+                        console.log(response);
+                        if (response.status === 200) {
+
                         }
                         else {
                           ElMessage.error("添加失败！！");
@@ -137,6 +167,16 @@ export default {
             formRef.value.resetFields();
         };
 
+      const handle = async (ev) => {
+        console.log(ev);
+        let file = ev.raw;
+        Attachment.attachment_local = "C:/Users/13606/Desktop/UpLoad-cs/" + file.name;
+        console.log(file.name);
+        console.log(file.type);
+        setNowTimes();
+        Attachment.attachment_date = sj.nowDate + sj.nowTime;
+      };
+
         return {
             rules,
             formRef,
@@ -145,6 +185,8 @@ export default {
             onReset,
           sj,
           setNowTimes,
+          handle,
+          Attachment,
         };
     },
 };
