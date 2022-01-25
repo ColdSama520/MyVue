@@ -166,6 +166,12 @@ export default {
         console.log(file.name);
         if (file.type === "image/jpeg")
           Resource.resource_type = "图片";
+        if (file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+          Resource.resource_type = "表格";
+        if (file.type === "")
+          Resource.resource_type = "文档";
+        if (file.type === "video/mp4")
+          Resource.resource_type = "视频";
         console.log(file.type);
         console.log(Resource.resource_type);
         setNowTimes();
