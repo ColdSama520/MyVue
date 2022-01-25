@@ -18,10 +18,10 @@
                         </div>
                     </template>
                     Vue
-                    <el-progress :percentage="81" color="#42b983"></el-progress>JavaScript
-                    <el-progress :percentage="10.7" color="#f1e05a"></el-progress>CSS
-                    <el-progress :percentage="1.9"></el-progress>HTML
-                    <el-progress :percentage="0.4" color="#f56c6c"></el-progress>
+                    <el-progress :percentage="92.3" color="#42b983"></el-progress>JavaScript
+                    <el-progress :percentage="6.4" color="#f1e05a"></el-progress>CSS
+                    <el-progress :percentage="1.1"></el-progress>HTML
+                    <el-progress :percentage="0.2" color="#f56c6c"></el-progress>
                 </el-card>
             </el-col>
             <el-col :span="16">
