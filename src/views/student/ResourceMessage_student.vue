@@ -69,7 +69,26 @@ export default {
         getData();
 
         const download = (index, row) => {
-          
+          // // axios.get('http://localhost:9090/File/download', { params : {name: Resource.ResourceData[index].resource_local} })
+          // axios.get('http://localhost:9090/File/download?name=C:/Users/13606/Desktop/UpLoad-cs/导入学生模板.xls')
+          //     //成功返回
+          //     .then(response => {
+          //       console.log(response);
+          //       if(response.status === 200) {
+          //         ElMessage.success("下载成功!!!");
+          //       }
+          //       else{
+          //         return false;
+          //       }
+          //     })
+          //     //失败返回
+          //     .catch(error => {
+          //       console.log(error);
+          //       return false;
+          //     })
+          let url = "http://localhost:9090/File/download?name=" + Resource.ResourceData[index].resource_local;
+          window.open(url, '_blank');
+          ElMessage.success("下载成功!!!");
         }
 
 
